@@ -1,0 +1,45 @@
+# .NET build artifacts
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# Rider
+.idea/
+*.sln.iml
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# NuGet packages
+*.nupkg
+# Package directories
+packages/
+
+# Logs
+*.log
+
+# Others
+*.vspscc
+*.vssscc
+
+# Publish output
+publish/
+
+# Test results
+TestResults/
+
+# Backup files
+*.bak
+
+# Ignore secrets
+secrets.json
+/Properties/launchSettings.json

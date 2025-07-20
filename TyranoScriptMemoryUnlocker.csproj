@@ -1,0 +1,51 @@
+﻿<!--
+This program is licensed under the GNU Affero General Public License v3 or later.
+See <https://www.gnu.org/licenses/>.
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>tsmu</AssemblyName>
+    <RootNamespace>TyranoScriptMemoryUnlocker</RootNamespace>
+	  <PackageId>TyranoScriptMemoryUnlocker</PackageId>
+
+	  <Product>TyranoScript Memory Unlocker (TSMU)</Product>
+	  <AssemblyTitle>$(Product)</AssemblyTitle>
+	  
+	  <Authors>ha-ves</Authors>
+	  <Company>Tekat</Company>
+	  
+	  <Trademark>(C) 2025 $(Company), $(Authors)</Trademark>
+	  <Copyright>Copyright$(Trademark)</Copyright>
+
+	  <License>Licensed under AGPLv3-and-later</License>
+	  <Disclaimer>Not affiliated with TyranoScript</Disclaimer>
+	  
+	  <Description>
+		  $(Product) is a tool to unlock CGs and replays in TyranoScript-based games/visual novels by modifying the save file.
+	  </Description>
+
+	  <Version>0.1.0</Version>
+	  <InformationalVersion>v$(Version)</InformationalVersion>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<AssemblyAttribute Include="TyranoScriptMemoryUnlocker.AssemblyLicenseAttribute">
+			<_Parameter1>$(License)</_Parameter1>
+		</AssemblyAttribute>
+		<AssemblyAttribute Include="TyranoScriptMemoryUnlocker.AssemblyDisclaimerAttribute">
+			<_Parameter1>$(Disclaimer)</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.9.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.7" />
+  </ItemGroup>
+
+
+</Project>
