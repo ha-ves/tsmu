@@ -9,9 +9,10 @@ See <https://www.gnu.org/licenses/>.
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	  <PublishTrimmed>true</PublishTrimmed>
     <AssemblyName>tsmu</AssemblyName>
     <RootNamespace>TyranoScriptMemoryUnlocker</RootNamespace>
-	  <PackageId>TyranoScriptMemoryUnlocker</PackageId>
+	  <PackageId>$(RootNamespace)</PackageId>
 
 	  <Product>TyranoScript Memory Unlocker (TSMU)</Product>
 	  <AssemblyTitle>$(Product)</AssemblyTitle>
@@ -19,32 +20,37 @@ See <https://www.gnu.org/licenses/>.
 	  <Authors>ha-ves</Authors>
 	  <Company>Tekat</Company>
 	  
-	  <Trademark>(C) 2025 $(Company), $(Authors)</Trademark>
-	  <Copyright>Copyright$(Trademark)</Copyright>
+	  <Copyright>(C) 2025 $(Company), $(Authors)</Copyright>
 
-	  <License>Licensed under AGPLv3-and-later</License>
-	  <Disclaimer>Not affiliated with TyranoScript</Disclaimer>
-	  
-	  <Description>
-		  $(Product) is a tool to unlock CGs and replays in TyranoScript-based games/visual novels by modifying the save file.
-	  </Description>
-
-	  <Version>0.1.0</Version>
+	  <Version>0.3.0</Version>
 	  <InformationalVersion>v$(Version)</InformationalVersion>
+	  <Changelog>
+		  - v0.1.0: Initial release, basic functionality implemented.
+		  - v0.2.x: Bug fixes and performance improvements.
+		            Better implementation of dry-run mode.
+		  - v0.3.0: Localization support added.
+					Improved error handling and logging.
+	  </Changelog>
   </PropertyGroup>
-
-	<ItemGroup>
-		<AssemblyAttribute Include="TyranoScriptMemoryUnlocker.AssemblyLicenseAttribute">
-			<_Parameter1>$(License)</_Parameter1>
-		</AssemblyAttribute>
-		<AssemblyAttribute Include="TyranoScriptMemoryUnlocker.AssemblyDisclaimerAttribute">
-			<_Parameter1>$(Disclaimer)</_Parameter1>
-		</AssemblyAttribute>
-	</ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Res\LocalizedString.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LocalizedString.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Res\LocalizedString.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LocalizedString.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 

@@ -1,0 +1,78 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Set version in csproj from tag
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/v}"
+          echo "Setting version to $VERSION in csproj"
+          sed -i 's|<Version>.*</Version>|<Version>'"$VERSION"'</Version>|' tsmu/TyranoScriptMemoryUnlocker.csproj
+
+      - name: Restore dependencies
+        run: dotnet restore tsmu/TyranoScriptMemoryUnlocker.csproj
+
+      - name: Publish Windows x64 (self-contained, single file, trimmed, compressed)
+        run: |
+          dotnet publish tsmu/TyranoScriptMemoryUnlocker.csproj \
+            --configuration Release \
+            --runtime win-x64 \
+            --self-contained true \
+            /p:PublishSingleFile=true \
+            /p:PublishTrimmed=true \
+            /p:EnableCompressionInSingleFile=true \
+            /p:PublishReadyToRun=false \
+            /p:DebugType=None \
+            /p:DebugSymbols=false \
+            /p:StripSymbols=true \
+            --output ./publish/win-x64
+
+      - name: Publish Linux x64 (self-contained, single file, trimmed, compressed)
+        run: |
+          dotnet publish tsmu/TyranoScriptMemoryUnlocker.csproj \
+            --configuration Release \
+            --runtime linux-x64 \
+            --self-contained true \
+            /p:PublishSingleFile=true \
+            /p:PublishTrimmed=true \
+            /p:EnableCompressionInSingleFile=true \
+            /p:PublishReadyToRun=false \
+            /p:DebugType=None \
+            /p:DebugSymbols=false \
+            /p:StripSymbols=true \
+            --output ./publish/linux-x64
+
+      # Find the output executable names
+      - name: Get Windows executable
+        id: winexe
+        run: |
+          echo "file=./publish/win-x64/tsmu.exe" >> $GITHUB_OUTPUT
+
+      - name: Tar and gzip Linux executable
+        id: linuxexe
+        run: |
+          tar -cvf - ./publish/linux-x64/tsmu | gzip -9 > ./publish/linux-x64/tsmu.tar.gz
+          echo "file=./publish/linux-x64/tsmu.tar.gz" >> $GITHUB_OUTPUT
+          
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          files: |
+            ${{ steps.winexe.outputs.file }}
+            ${{ steps.linuxexe.outputs.file }}

@@ -43,3 +43,4 @@ TestResults/
 # Ignore secrets
 secrets.json
 /Properties/launchSettings.json
+/Properties/PublishProfiles

@@ -6,10 +6,14 @@
 */
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using TyranoScriptMemoryUnlocker.Asar;
 
+#pragma warning disable IDE0079 // Remove unnecessary suppression
+#pragma warning disable IDE0130 // Namespace for asar types
 namespace TyranoScriptMemoryUnlocker.Asar.Data
 {
     #region from https://github.com/electron/asar#format
@@ -113,7 +117,10 @@ namespace TyranoScriptMemoryUnlocker.Asar.Data
     {
         [JsonPropertyName(AsarConstants.AsarNodeKey)]
         public ConcurrentDictionary<string, AsarNode>? Nodes { get; set; }
-
+        
+        [JsonPolymorphic]
+        [JsonDerivedType(typeof(AsarDirectoryNode))]
+        [JsonDerivedType(typeof(AsarFileNode))]
         [JsonConverter(typeof(AsarNodeJsonConverter))]
         public abstract class AsarNode
         {
@@ -141,26 +148,25 @@ namespace TyranoScriptMemoryUnlocker.Asar.Data
 
         public class AsarHeaderJsonConverter : JsonConverter<AsarHeader>
         {
+            [SuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code", 
+                Justification = Suppressions.JsonTrimmingJustification)]
             public override AsarHeader? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
             {
                 using var doc = JsonDocument.ParseValue(ref reader);
                 var elem = doc.RootElement.GetProperty(AsarConstants.AsarNodeKey);
 
-                var d = elem.Deserialize<ConcurrentDictionary<string, AsarNode>?>(options);
-
-                Parallel.ForEach(elem.EnumerateObject().Select(prop => prop.Name), name =>
-                {
-                    // Ensure each node has a Name property set
-                    if (d == null || !d.TryGetValue(name, out AsarNode? value))
-                        return;
-                    value.Name = name;
-                });
-
                 return new AsarHeader
                 {
-                    Nodes = d
+                    Nodes = elem.EnumerateObject()
+                        .Aggregate(new ConcurrentDictionary<string, AsarNode>(),
+                        (dict, props) =>
+                        {
+                            dict[props.Name] = props.Value.Deserialize<AsarNode>(options)!;
+                            return dict;
+                        })
                 };
             }
+
             public override void Write(Utf8JsonWriter writer, AsarHeader value, JsonSerializerOptions options)
             {
                 throw new NotImplementedException("Serializing is not implemented yet.");
@@ -169,6 +175,8 @@ namespace TyranoScriptMemoryUnlocker.Asar.Data
 
         public class AsarNodeJsonConverter : JsonConverter<AsarNode>
         {
+            [SuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code", 
+                Justification = Suppressions.JsonTrimmingJustification)]
             public override AsarNode? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
             {
                 using var doc = JsonDocument.ParseValue(ref reader);
@@ -177,20 +185,18 @@ namespace TyranoScriptMemoryUnlocker.Asar.Data
                 if (nodeElem.TryGetProperty(AsarConstants.AsarNodeKey, out var filesProp) && filesProp.ValueKind == JsonValueKind.Object)
                 {
                     // It's a folder node
-                    var elem = doc.RootElement.GetProperty(AsarConstants.AsarNodeKey);
-                    var d = elem.Deserialize<ConcurrentDictionary<string, AsarNode>?>(options);
-
-                    Parallel.ForEach(elem.EnumerateObject().Select(prop => prop.Name), name =>
-                    {
-                        // Ensure each node has a Name property set
-                        if (d == null || !d.TryGetValue(name, out AsarNode? value))
-                            return;
-                        value.Name = name;
-                    });
-
+                    var elem = nodeElem.GetProperty(AsarConstants.AsarNodeKey);
+                    
                     return new AsarDirectoryNode
                     {
-                        Files = d
+                        //Files = d
+                        Files = elem.EnumerateObject()
+                            .Aggregate(new ConcurrentDictionary<string, AsarNode>(),
+                            (dict, props) =>
+                            {
+                                dict[props.Name] = props.Value.Deserialize<AsarNode>(options)!;
+                                return dict;
+                            })
                     };
                 }
                 else
@@ -245,4 +251,10 @@ namespace TyranoScriptMemoryUnlocker.Asar.Data
         #endregion
 
     }
+
+    [JsonSourceGenerationOptions(WriteIndented = false)]
+    [JsonSerializable(typeof(AsarHeader), GenerationMode = JsonSourceGenerationMode.Metadata)]
+    [JsonSerializable(typeof(AsarHeader.AsarNode), GenerationMode = JsonSourceGenerationMode.Metadata)]
+    internal partial class AsarJsonContext : JsonSerializerContext { }
+
 }

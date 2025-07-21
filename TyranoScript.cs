@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TyranoScriptMemoryUnlocker.Asar;
 
+#pragma warning disable IDE0130
 namespace TyranoScriptMemoryUnlocker.TyranoScript
 {
     public static class TyranoScript

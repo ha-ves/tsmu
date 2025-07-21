@@ -5,12 +5,15 @@
  * See <https://www.gnu.org/licenses/>.
 */
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using TyranoScriptMemoryUnlocker.Asar.Data;
 
+#pragma warning disable IDE0079 // Remove unnecessary suppression
+#pragma warning disable IDE0130 // Namespace for AsarArchive and related classes
 namespace TyranoScriptMemoryUnlocker.Asar
 {
     public class AsarArchive(FileStream stream) : IDisposable
@@ -292,26 +295,18 @@ namespace TyranoScriptMemoryUnlocker.Asar
                 return 0;
             }
             int toRead = (int)Math.Min(buffer.Length, available);
-            return await base.ReadAsync(buffer.Slice(0, toRead), cancellationToken).ConfigureAwait(false);
+            return await base.ReadAsync(buffer[..toRead], cancellationToken).ConfigureAwait(false);
         }
 
         public override long Seek(long offset, SeekOrigin origin)
         {
-            long newPosRelative;
-            switch (origin)
+            var newPosRelative = origin switch
             {
-                case SeekOrigin.Begin:
-                    newPosRelative = offset;
-                    break;
-                case SeekOrigin.Current:
-                    newPosRelative = Position + offset;
-                    break;
-                case SeekOrigin.End:
-                    newPosRelative = _length + offset;
-                    break;
-                default:
-                    throw new ArgumentException("Invalid SeekOrigin", nameof(origin));
-            }
+                SeekOrigin.Begin => offset,
+                SeekOrigin.Current => Position + offset,
+                SeekOrigin.End => _length + offset,
+                _ => throw new ArgumentException("Invalid SeekOrigin", nameof(origin)),
+            };
             if (newPosRelative < 0 || newPosRelative > _length)
             {
                 throw new IOException("Attempted to seek outside the bounds of the file entry.");
@@ -332,6 +327,12 @@ namespace TyranoScriptMemoryUnlocker.Asar
 
     public static class AsarFile
     {
+        private static readonly JsonSerializerOptions asarParseOptions = new()
+        {
+            PropertyNameCaseInsensitive = true,
+            TypeInfoResolver = AsarJsonContext.Default
+        };
+
         public static AsarArchive Open(string filePath)
         {
             var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, 0, true);
@@ -390,6 +391,8 @@ namespace TyranoScriptMemoryUnlocker.Asar
             return dirfiles;
         }
 
+        [SuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code", 
+            Justification = Suppressions.JsonTrimmingJustification)]
         private static AsarHeader ParseHeader(Stream stream)
         {
             using var reader = new PickleReader(stream, Encoding.Default, leaveOpen: true);
@@ -401,7 +404,7 @@ namespace TyranoScriptMemoryUnlocker.Asar
 
             var headerStr = Encoding.Default.GetString(headerSpan);
 
-            var header = JsonSerializer.Deserialize<AsarHeader>(headerStr)
+            var header = JsonSerializer.Deserialize<AsarHeader>(headerStr, asarParseOptions)
                 ?? throw new InvalidDataException("Failed to parse ASAR header.");
 
             return header;
@@ -462,5 +465,10 @@ namespace TyranoScriptMemoryUnlocker.Asar
 
             return MemoryMarshal.Cast<byte, T>(arrayPayload.Span);
         }
+    }
+
+    internal static class Suppressions
+    {
+        internal const string JsonTrimmingJustification = "The Json parsing already using appropriate option.";
     }
 }

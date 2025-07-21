@@ -7,24 +7,21 @@
 using CommandLine;
 using CommandLine.Text;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using TyranoScriptMemoryUnlocker.Asar;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using TyranoScriptMemoryUnlocker.Res;
 using static TyranoScriptMemoryUnlocker.TyranoScript.TyranoScript;
 
 namespace TyranoScriptMemoryUnlocker
 {
     public class TSMU
     {
-        public class TSMUArgs
+        public class TSMUArgs()
         {
             [Option('v', "verbose", HelpText = "Increase verbosity. Can be stacked -vv, up to 2 levels.", FlagCounter = true)]
             public int Verbosity { get; set; }
@@ -39,51 +36,47 @@ namespace TyranoScriptMemoryUnlocker
             public bool DryRun { get; set; } = false;
         }
 
-        private const string SearchTopPath = "data/scenario";
-        private const string ScriptExt = "ks";
-        private const string CGKsPath = "data/scenario/cg.ks";
-        private const string ReplayKsPath = "data/scenario/replay.ks";
-        private const string CGViewKey = "cg_view";
-        private const string ReplayViewKey = "replay_view";
+        internal const string SearchTopPath = "data/scenario";
+        internal const string ScriptExt = "ks";
+        internal const string CGKsPath = "data/scenario/cg.ks";
+        internal const string ReplayKsPath = "data/scenario/replay.ks";
+        internal const string CGViewKey = "cg_view";
+        internal const string ReplayViewKey = "replay_view";
+        internal const string ViewStorageKey = "storage";
+        internal const string ViewTargetKey = "target";
+        internal const string CGEnableValue = "on";
 
         private static ILoggerFactory? logger;
         private static ILogger? log;
 
         static TSMUArgs? Args;
 
+#pragma warning disable IDE0079 // Remove unnecessary suppression
+        [SuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code", 
+            Justification = Suppressions.JsonTrimmingJustification)]
+#pragma warning restore IDE0079 // Remove unnecessary suppression
         public static void Main(string[] args)
         {
             Console.OutputEncoding = new UTF8Encoding(false);
+            LocalizedString.Culture = System.Globalization.CultureInfo.CurrentCulture;
 
             var cmd = Assembly.GetExecutingAssembly()
                 .GetName().Name;
             var title = Assembly.GetExecutingAssembly()
                 .GetCustomAttribute<AssemblyTitleAttribute>()?
                 .Title;
-            var desc = Assembly.GetExecutingAssembly()
-                .GetCustomAttribute<AssemblyDescriptionAttribute>()?
-                .Description.Split('\n', StringSplitOptions.RemoveEmptyEntries)
-                .Select(s => s.Trim('\r', '\n', '\t'))
-                .Where(s => !string.IsNullOrWhiteSpace(s))
-                .Aggregate((a, b) => a + Environment.NewLine + b);
-            var version = Assembly.GetExecutingAssembly()
-                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
-                .InformationalVersion;
+            var desc = string.Format(LocalizedString.Desc, title);
             var build = Assembly.GetExecutingAssembly()
                 .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
                 .InformationalVersion;
+            if (build?.IndexOf('+') is int idx && idx > 0)
+                // only get up to the short commit hash if present
+                build = build[..(idx + 14)];
             var copr = Assembly.GetExecutingAssembly()
                 .GetCustomAttribute<AssemblyCopyrightAttribute>()?
                 .Copyright;
-            var trdmk = Assembly.GetExecutingAssembly()
-                .GetCustomAttribute<AssemblyTrademarkAttribute>()?
-                .Trademark;
-            var lic = Assembly.GetExecutingAssembly()
-                .GetCustomAttribute<AssemblyLicenseAttribute>()?
-                .Value;
-            var dsclmr = Assembly.GetExecutingAssembly()
-                .GetCustomAttribute<AssemblyDisclaimerAttribute>()?
-                .Value;
+            var lic = LocalizedString.AppLic;
+            var dsclmr = LocalizedString.AppDisclaimer;
 
             var parser = new Parser(with =>
             {
@@ -91,19 +84,25 @@ namespace TyranoScriptMemoryUnlocker
                 with.AutoVersion = false;
                 with.AllowMultiInstance = true;
             });
-            var parsed = parser.ParseArguments<TSMUArgs>(args);
+            var parsed = parser.ParseArguments(() => new TSMUArgs()
+            {
+                AsarPath = string.Empty,
+                SavPath = string.Empty,
+                Verbosity = 0,
+                DryRun = false
+            }, args);
             parsed.WithParsed(args =>
             {
                 if (!Path.Exists(args.SavPath = Path.GetFullPath(args.SavPath)))
                 {
-                    ExitArgsError($"Error: .sav file path '{args.SavPath}' does not exist.",
-                        cmd, title, build, trdmk, lic, dsclmr);
+                    ExitArgsError(string.Format(LocalizedString.ErrorSavNotFound, args.SavPath),
+                        cmd, title, build, copr, lic, dsclmr);
                     return;
                 }
                 if (!Path.Exists(args.AsarPath = Path.GetFullPath(args.AsarPath)))
                 {
-                    ExitArgsError($"Error: .asar file path '{args.AsarPath}' does not exist.", 
-                        cmd, title, build, trdmk, lic, dsclmr);
+                    ExitArgsError(string.Format(LocalizedString.ErrorAsarNotFound, args.AsarPath), 
+                        cmd, title, build, copr, lic, dsclmr);
                     return;
                 }
             })
@@ -113,20 +112,12 @@ namespace TyranoScriptMemoryUnlocker
                 {
                     var helpText = HelpText.AutoBuild(parsed, h =>
                     {
-                        h.Heading = $"{title} {build}.";
-                        h.Copyright = $"  {copr}. {lic}.{Environment.NewLine}" +
-                                      $"  {dsclmr}.{Environment.NewLine}";
                         h.AddEnumValuesToHelpText = true;
                         h.AutoVersion = false;
-                        h.AddPreOptionsText($"""
-                        Description:
-                            {desc}
 
-                        Usage:
-                            tsmu [options] -a <path> -s <path>
-
-                        Options:
-                        """);
+                        h.Heading = $"{title} {build}. {copr}.";
+                        h.Copyright = $"{lic} {dsclmr} {Environment.NewLine}";
+                        h.AddPreOptionsText(string.Format(LocalizedString.HelpTextDesc, desc, Environment.NewLine));
                         return h;
                     }, e => e);
 
@@ -137,80 +128,77 @@ namespace TyranoScriptMemoryUnlocker
                 {
                     var err = errors.FirstOrDefault() switch
                     {
-                        MissingRequiredOptionError m => $"Missing required option: '-{m.NameInfo.ShortName}' / '--{m.NameInfo.LongName}'",
-                        UnknownOptionError u => $"Unknown option: '{(u.Token.Length > 1 ? "--" : '-')}{u.Token}'",
-                        CommandLine.Error e => $"Unknown error. ({e.Tag}:{e.GetType()})",
-                        _ => "Unknown error."
+                        MissingRequiredOptionError m => string.Format(LocalizedString.ArgMissing, $"  '-{m.NameInfo.ShortName}' / '--{m.NameInfo.LongName}'"),
+                        UnknownOptionError u => string.Format(LocalizedString.ArgUnknown, $"  '{(u.Token.Length > 1 ? "--" : '-')}{u.Token}'"),
+                        NamedError n => string.Format(LocalizedString.ArgInvalid, $"  '{n.NameInfo.NameText}'  "),
+                        CommandLine.Error e => $"{LocalizedString.ArgErrorUnknown} ({e.Tag}:{e.GetType()})",
+                        _ => LocalizedString.ArgErrorUnknown
                     };
 
-                    ExitArgsError(err, cmd, title, build, trdmk, lic, dsclmr);
+                    ExitArgsError(err, cmd, title, build, copr, lic, dsclmr);
                 }
             });
             Args = parsed.Value;
 
-            logger =
-            LoggerFactory.Create(cfg =>
+            logger = LoggerFactory.Create(cfg =>
             {
-                cfg.ClearProviders().
-                AddSimpleConsole(opt =>
+                cfg.ClearProviders().AddSimpleConsole(opt =>
                 {
-                    opt.IncludeScopes = true;
-                    opt.SingleLine = true;
-                    opt.TimestampFormat = "[HH:mm:ss.ffffff] ";
+                    opt.IncludeScopes = opt.SingleLine = true;
+                    opt.TimestampFormat = "[HH:mm:ss.ffffff]";
                 });
                 cfg.SetMinimumLevel((LogLevel)Math.Max((int)(LogLevel.Information - Args.Verbosity), 0));
             });
-            log = logger.CreateLogger<TSMU>();
+            log = logger.CreateLogger(nameof(TSMU));
+            var tablelog = LoggerFactory.Create(cfg =>
+            {
+                cfg.ClearProviders().AddSimpleConsole(opt =>
+                {
+                    opt.IncludeScopes = true;
+                    opt.TimestampFormat = "[HH:mm:ss.ffffff]";
+                    opt.SingleLine = false;
+                });
+                cfg.SetMinimumLevel((LogLevel)Math.Max((int)(LogLevel.Information - Args.Verbosity), 0));
+            })
+            .CreateLogger(nameof(TSMU));
 
-            if (!File.Exists(Args.AsarPath))
-            {
-                log.LogError("Error: Can't find asar file ({asar})", Args.AsarPath);
-                Environment.Exit(1);
-            }
-            if (!File.Exists(Args.SavPath))
-            {
-                log.LogError("Error: Can't find sav file ({sav}).", Args.SavPath);
-                Environment.Exit(1);
-            }
+            log.LogInformation("{title} {build} {copr}. {lic} {dsclmr}", title, build, copr, lic, dsclmr);
 
             if (Args.DryRun)
-                log.LogInformation("Dry run mode enabled. No changes will be made to the save file.");
+                log.LogInformation("{Dry}", LocalizedString.DryModeNotice);
 
             try
             {
-                log.LogDebug("Opening asar file: {asar}", Args.AsarPath);
+                log.LogDebug("{asar}", string.Format(LocalizedString.OpenAsar, Args.AsarPath));
                 using var asar = AsarFile.Open(Args.AsarPath);
-                var scripts = FindFilesByExt(asar, ScriptExt, SearchTopPath);
+                var scripts = FindFilesByExt(asar, ScriptExt, SearchTopPath).ToList();
 
                 if (log.IsEnabled(LogLevel.Trace))
-                    log.PrintTable(LogLevel.Trace, scripts.Select(s => s.Name), "Scenario scripts: ");
+                    tablelog.PrintTable(LogLevel.Trace, scripts.Select(s => s.Name), LocalizedString.FoundScripts, widthOfTable: 76);
 
-                log.LogDebug("Found {count} script files in asar.", scripts.Count());
+                log.LogDebug("{count}", string.Format(LocalizedString.FoundAsarScripts, scripts.Count));
 
                 var cgks = asar.Files[CGKsPath] as AsarFileEntry ?? throw new FileNotFoundException("File not found in archive.", CGKsPath);
                 var cggallery = GetUnlockableCG(new StreamReader(cgks.ReadAsFileStream(true), Encoding.UTF8)).ToList();
 
                 if (log.IsEnabled(LogLevel.Trace))
-                    log.PrintTable(LogLevel.Trace, cggallery, "Unlockable CGs:");
+                    tablelog.PrintTable(LogLevel.Trace, cggallery, LocalizedString.UnlockableCGs, widthOfTable: 76);
 
-                log.LogInformation("Found {count} Unlockable CGs.", cggallery.Count);
+                log.LogInformation("{count}", string.Format(LocalizedString.FoundCGs, cggallery.Count));
 
                 var replayks = asar.Files[ReplayKsPath] as AsarFileEntry ?? throw new FileNotFoundException("File not found in archive.", ReplayKsPath);
                 var replaygallery = GetReplayButton(new StreamReader(replayks.ReadAsFileStream(true), Encoding.UTF8)).ToList();
 
                 if (log.IsEnabled(LogLevel.Trace))
-                    log.PrintTable(LogLevel.Trace, replaygallery, "Unlockable Replays:");
+                    tablelog.PrintTable(LogLevel.Trace, replaygallery, LocalizedString.UnlockableReplays, widthOfTable: 76);
 
-                log.LogInformation("Found {count} Unlockable Replays.", replaygallery.Count);
+                log.LogInformation("{count}", string.Format(LocalizedString.FoundReplays, replaygallery.Count));
 
                 FileAccess accs = FileAccess.ReadWrite;
                 if (Args.DryRun)
-                {
-                    log.LogDebug("Backup cancelled because of dry run.");
                     accs = FileAccess.Read; // Read-only access for dry run
-                }
 
-                log.LogDebug("Opening sav file: {sav}", Args.SavPath);
+                log.LogInformation("{sav}", string.Format(LocalizedString.OpenSav, Args.SavPath));
                 using var savfs = new FileStream(Args.SavPath, FileMode.Open, accs);
                 string bakfile;
                 int iter = 0;
@@ -222,124 +210,135 @@ namespace TyranoScriptMemoryUnlocker
 
                 if (!Args.DryRun)
                 {
-                    log.LogDebug("Backing up save file '{sav}'->'{bak}'", Args.SavPath, bakfile);
+                    log.LogDebug("{bak}", string.Format(LocalizedString.SavBackup, Args.SavPath, bakfile));
 
                     using (var savbak = new FileStream(bakfile, FileMode.CreateNew, FileAccess.Write))
                         savfs.CopyTo(savbak);
                     savfs.Position = 0;
                 }
+                else
+                {
+                    log.LogDebug("{bak}", LocalizedString.SavBackupCancel);
+                    log.LogDebug("{bak}", string.Format(LocalizedString.SavBackupDry, Args.SavPath, bakfile));
+                }
 
-                log.LogDebug("Parsing list from JSON.");
+                log.LogDebug("{json}", LocalizedString.SavJsonParse);
 
                 using var savread = new StreamReader(savfs, Encoding.UTF8, leaveOpen: true);
                 var savun = Uri.UnescapeDataString(savread.ReadToEnd());
 
                 JsonNode savjson;
-                Dictionary<string, string> savcgs;
-                Dictionary<string, Dictionary<string, string>> savrply;
+                List<string> savcgs;
+                List<KeyValuePair<string, string>> savrply;
 
                 try
                 {
-                    savjson = JsonNode.Parse(savun) ?? throw new JsonException("Invalid .sav file.");
+                    savjson = JsonNode.Parse(savun) ?? throw new JsonException(LocalizedString.ExcInvalidSav);
 
-                    savcgs = savjson[CGViewKey].Deserialize<Dictionary<string, string>>() 
-                        ?? throw new JsonException($"Invalid ['{CGViewKey}'] in .sav file.");
-
-                    if (log.IsEnabled(LogLevel.Trace))
-                        log.PrintTable(LogLevel.Trace, savcgs.Select(kvp => $"{kvp.Key}={kvp.Value}"),
-                                "Already Unlocked CGs in save:");
-
-                    savrply = savjson[ReplayViewKey]!.Deserialize<Dictionary<string, Dictionary<string, string>>>() 
-                        ?? throw new JsonException($"Invalid ['{ReplayViewKey}'] in .sav file.");
+                    savcgs = [..(savjson[CGViewKey] as JsonObject)?.Select(p => p.Key)
+                        ?? throw new JsonException(string.Format(LocalizedString.ExcInvalidView, CGViewKey))];
 
                     if (log.IsEnabled(LogLevel.Trace))
-                        log.PrintTable(LogLevel.Trace, savrply.Select(kvp => $"{kvp.Key}={kvp.Value["storage"]}"),
-                            "Already Unlocked Replays in save:");
+                        tablelog.PrintTable(LogLevel.Trace, savcgs, LocalizedString.UnlockedCGsAlr, widthOfTable: 76);
+
+                    savrply = [..(savjson[ReplayViewKey] as JsonObject)?.Select(p => 
+                                new KeyValuePair<string, string>(p.Key, p.Value![ViewStorageKey]!.GetValue<string>()))
+                        ?? throw new JsonException(string.Format(LocalizedString.ExcInvalidView, ReplayViewKey))];
+
+                    if (log.IsEnabled(LogLevel.Trace))
+                        tablelog.PrintTable(LogLevel.Trace, savrply.Select(kvp => $"{kvp.Key}={kvp.Value}"),
+                            LocalizedString.UnlockedReplaysAlr, widthOfTable: 76);
                 }
                 catch (JsonException exc)
                 {
-                    log?.LogError(exc, "Corrupted? Is the game running fine? (!!)Delete and re-run the game(!!) ONLY IF YOU ARE SURE (!!)");
+                    log.LogError(exc, "{exc}", LocalizedString.JsonExc);
                     Environment.Exit(1);
                     return; // Unreachable, but required to satisfy compiler
                 }
 
-                savcgs = savcgs.Concat(cggallery.Select(s => new KeyValuePair<string, string>(s, "on")))
-                    .GroupBy(kvp => kvp.Key).ToDictionary(g => g.Key, g => g.First().Value);
+                var cgremain = cggallery.Except(savcgs);
 
-                //if (log.IsEnabled(LogLevel.Trace))
-                //    log.LogTrace("Updated CGs in save: {cgs}", string.Join(", ", savcgs.Select(kvp => $"{kvp.Key}={kvp.Value}")));
+                if (cgremain.Any())
+                    log.LogInformation("{count}", string.Format(LocalizedString.UnlockedCGs, cgremain.Count()));
 
-                log.LogInformation("Now Unlocked {count} CGs.", savcgs.Count);
+                savcgs = [.. savcgs, .. cgremain];
+
+                var savcgsdict = savcgs.GroupBy(k => k).ToDictionary(g => g.Key, k => CGEnableValue);
 
                 // check if there are replays to add
-                if (replaygallery.Except(savrply.Select(s => s.Key)).Any())
+                Dictionary<string, Dictionary<string, string>>? savrplydict = null;
+                var replayremain = replaygallery.Except(savrply.Select(s => s.Key));
+                if (replayremain.Any())
                 {
+                    /// only get the <see cref="ViewStorageKey"/> but maybe some replays use the <see cref="ViewTargetKey"/> too...
+                    /// TODO: check if the <see cref="ViewTargetKey"/> is used in the replays.
                     var replayable = scripts.SelectMany(fl => GetUnlockableReplay(new StreamReader(fl.ReadAsFileStream(true), Encoding.UTF8)));
 
-                    //if (log.IsEnabled(LogLevel.Trace))
-                    //    log.LogTrace("Replayable scripts: {replays}", string.Join(", ", replayable.Select(s => $"{s.Key}={s.Value}")));
+                    log.LogInformation("{count}", string.Format(LocalizedString.UnlockedReplays, replayremain.Count()));
 
-                    savrply = savrply
-                        .Concat(replayable.Select(s => new KeyValuePair<string, Dictionary<string, string>>(s.Key, new Dictionary<string, string> { { "storage", s.Value }, { "target", string.Empty } })))
-                        .GroupBy(kvp => kvp.Key).ToDictionary(g => g.Key, g => g.First().Value);
+                    savrply = [.. savrply, .. replayable];
 
-                    //if (log.IsEnabled(LogLevel.Trace))
-                    //    log.LogTrace("Updated Replays in save: {replays}", string.Join(", ", savrply.Select(kvp => $"{kvp.Key}={kvp.Value["storage"]}")));
-
-                    log.LogInformation("Now Unlocked {count} Replays.", savrply.Count);
+                    savrplydict = savrply.GroupBy(k => k.Key).ToDictionary(g => g.Key,
+                                                    g => new Dictionary<string, string>
+                                                    {
+                                                        [ViewStorageKey] = g.Last().Value,
+                                                        [ViewTargetKey] = string.Empty
+                                                    });
                 }
 
-                log.LogDebug("Serializing changes to JSON.");
+                log.LogDebug("{json}", LocalizedString.SavJsonSerialize);
 
-                savjson[CGViewKey] = JsonSerializer.SerializeToNode(savcgs);
-                savjson[ReplayViewKey] = JsonSerializer.SerializeToNode(savrply);
+                savjson[CGViewKey] = JsonSerializer.SerializeToNode(savcgsdict,JsonDictSerializeContext.Default.CGViewKey);
+                savjson[ReplayViewKey] = JsonSerializer.SerializeToNode(savrplydict, JsonDictSerializeContext.Default.ReplayViewKey);
 
                 savfs.Position = 0;
-                var savjsoned = JsonSerializer.Serialize(savjson);
+                var savjsoned = savjson.ToJsonString();
                 var savjsonen = Uri.EscapeDataString(savjsoned);
-
-                log.LogInformation("Saving changes to the sav file: {sav}", Args.SavPath);
 
                 if (Args.DryRun)
                 {
-                    log.LogInformation("Dry run mode enabled. No changes will be made to the save file.");
-                    log.LogDebug("Would write to {sav}", Args.SavPath);
+                    log.LogInformation("{dry}", LocalizedString.DryModeNotice);
+                    log.LogDebug("{sav}", string.Format(LocalizedString.SavingSavDry, Args.SavPath));
                 }
                 else
                 {
+                    log.LogInformation("{sav}", string.Format(LocalizedString.SavingSav, Args.SavPath));
                     using var savwrite = new StreamWriter(savfs, new UTF8Encoding(false));
                     savwrite.Write(savjsonen);
                     savwrite.Flush();
                 }
 
-                log.LogInformation("==================================================");
-                log.LogInformation("Done! The save file has been updated successfully.");
-                log.LogInformation("Enjoy the unlocked contents in CG or Memory mode!");
-                log.LogInformation("Unlocked CGs: {count}", savcgs.Count);
-                log.LogInformation("Unlocked Replays: {count}", savrply.Count);
-                log.LogInformation("==================================================");
-                log.LogInformation("{title} {ver}.", title, build);
-                log.LogInformation("{copr}.", copr);
-                log.LogInformation("{lic}.", lic);
-                log.LogInformation("==================================================");
+                log.LogInformation("{sym}", LocalizedString.LogLineDone);
+                log.LogInformation("{msg}", LocalizedString.AppSuccess_Line1);
+                log.LogInformation("{msg}", LocalizedString.AppSuccess_Line2);
+                log.LogInformation("{msg}", string.Format(LocalizedString.AppSuccess_Line3, savcgsdict.Count));
+                if (savrplydict != null)
+                    log.LogInformation("{msg}", string.Format(LocalizedString.AppSuccess_Line4, savrplydict.Count));
+                else
+                    log.LogInformation("{msg}", string.Format(LocalizedString.AppSuccess_Line4, savrply.Count));
+                log.LogInformation("{sym}", LocalizedString.LogLine);
+                log.LogInformation("{sym}", LocalizedString.LogLineTY);
+                log.LogInformation("{title} {ver}", title, build);
+                log.LogInformation("{copr}. {lic}", copr, lic);
+                log.LogInformation("{sym}", LocalizedString.LogLine);
             }
             catch (Exception exc)
             {
-                log?.LogError(exc, "An error occurred while processing the asar or save file.");
+                log?.LogError(exc, "{exc}", LocalizedString.ErrorAsarSav);
                 Environment.Exit(1);
             }
         }
 
-        private static void ExitArgsError(string? err, string? cmd, string? title, string? build, string? trdmk, string? lic, string? dsclmr)
+        private static void ExitArgsError(string? err, string? cmd, string? title, string? build, string? copr, string? lic, string? dsclmr)
         {
             var errText = new HelpText
             {
-                Heading = $"{title} {build} {trdmk}.",
-                Copyright = $"{lic}. {dsclmr}.{Environment.NewLine}",
+                Heading = $"{title} {build}. {copr}.",
+                Copyright = $"{lic}. {dsclmr}." + Environment.NewLine,
             };
-            errText.AddPreOptionsLine("ERROR:  " + err);
+            errText.AddPreOptionsLine(err);
             errText.AddPreOptionsLine(string.Empty);
-            errText.AddPreOptionsLine($"Try '{cmd} --help' for more information.");
+            errText.AddPreOptionsLine(string.Format(LocalizedString.ErrorHelpCmd, cmd));
 
             Console.WriteLine(errText);
             Environment.Exit(1);
@@ -353,8 +352,44 @@ namespace TyranoScriptMemoryUnlocker
             if (items == null || !items.Any())
                 return;
 
-            // enumerate
-            items = [.. items];
+            // Helper function to calculate display width (counts kana and fullwidth characters as 2)
+            int GetDisplayWidth(string text)
+            {
+                int width = 0;
+                foreach (var c in text)
+                {
+                    if ((c >= '\u3040' && c <= '\u309F') || // Hiragana
+                        (c >= '\u30A0' && c <= '\u30FF') || // Katakana
+                        (c >= '\uFF01' && c <= '\uFF60') || // Fullwidth punctuation and symbols
+                        (c >= '\u4E00' && c <= '\u9FFF'))   // CJK Unified Ideographs (Kanji)
+                    {
+                        width += 2;
+                    }
+                    else
+                    {
+                        width += 1;
+                    }
+                }
+                return width;
+            }
+
+            // Helper function to truncate a string by display width
+            string TruncateToDisplayWidth(string text, int maxWidth)
+            {
+                int width = 0;
+                var sb = new StringBuilder();
+                foreach (var c in text)
+                {
+                    int charWidth = ((c >= '\u3040' && c <= '\u309F') ||
+                                     (c >= '\u30A0' && c <= '\u30FF') ||
+                                     (c >= '\uFF01' && c <= '\uFF60')) ? 2 : 1;
+                    if (width + charWidth > maxWidth)
+                        break;
+                    sb.Append(c);
+                    width += charWidth;
+                }
+                return sb.ToString();
+            }
 
             // Define padding to add extra spaces between columns.
             int padding = 2;
@@ -378,7 +413,7 @@ namespace TyranoScriptMemoryUnlocker
                 .ToList();
 
             // Local word-wrap function: splits a string into lines of maximum width (cellWidth).
-            List<string> WordWrap(string text, int maxWidth)
+            static List<string> WordWrap(string text, int maxWidth)
             {
                 var wrapped = new List<string>();
                 if (string.IsNullOrEmpty(text))
@@ -429,8 +464,9 @@ namespace TyranoScriptMemoryUnlocker
             {
                 // Create a single row for the title spanning all columns.
                 int spanWidth = totalWidth - 2; // subtracting borders
-                string formattedTitle = title.Length > spanWidth ? title.Substring(0, spanWidth) : title;
-                int padTotal = spanWidth - formattedTitle.Length;
+                string formattedTitle = GetDisplayWidth(title) > spanWidth ? TruncateToDisplayWidth(title, spanWidth) : title;
+                int titleDisplayWidth = GetDisplayWidth(formattedTitle);
+                int padTotal = spanWidth - titleDisplayWidth;
                 int padLeft = padTotal / 2;
                 int padRight = padTotal - padLeft;
                 formattedTitle = new string(' ', padLeft) + formattedTitle + new string(' ', padRight);
@@ -459,22 +495,16 @@ namespace TyranoScriptMemoryUnlocker
                 }
                 sb.AppendLine(horizontalLine);
             }
-            logger.Log(level, "Table: {title}", title ?? string.Empty);
-            if (logger.IsEnabled(level))
-            {
-                Console.Write(sb.ToString());
-            }
+            logger.Log(level, "{table}", sb.ToString());
         }
     }
 
-    [AttributeUsage(AttributeTargets.Assembly)]
-    internal class AssemblyTSMUAttribute(params string?[]? strs) : Attribute
-    {
-        public string? Value => strs?.Aggregate((a, b) => a + Environment.NewLine + b);
-
-        public string?[]? Values => strs;
-    }
-    internal class AssemblyLicenseAttribute(params string[]? strs) : AssemblyTSMUAttribute(strs) { };
-
-    internal class AssemblyDisclaimerAttribute(params string[]? strs) : AssemblyTSMUAttribute(strs) { };
+    [JsonSourceGenerationOptions(WriteIndented = false)]
+    [JsonSerializable(typeof(Dictionary<string, string>), 
+        GenerationMode = JsonSourceGenerationMode.Serialization, 
+        TypeInfoPropertyName = nameof(TSMU.CGViewKey))]
+    [JsonSerializable(typeof(Dictionary<string, Dictionary<string, string>>), 
+        GenerationMode = JsonSourceGenerationMode.Serialization,
+        TypeInfoPropertyName = nameof(TSMU.ReplayViewKey))]
+    internal partial class JsonDictSerializeContext : JsonSerializerContext { }
 }

@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppDisclaimer" xml:space="preserve">
+    <value>TyranoScriptとは一切関係ありません。</value>
+  </data>
+  <data name="AppLic" xml:space="preserve">
+    <value>「AGPLv3-and-later」ライセンスのもとで提供されています。</value>
+  </data>
+  <data name="AppSuccess_Line1" xml:space="preserve">
+    <value>セーブファイルの更新に成功しました！</value>
+  </data>
+  <data name="AppSuccess_Line2" xml:space="preserve">
+    <value>CG・回想モードで解放されたコンテンツ、楽しみだな！</value>
+  </data>
+  <data name="AppSuccess_Line3" xml:space="preserve">
+    <value>[{0}]個のCGが解放されました！</value>
+  </data>
+  <data name="AppSuccess_Line4" xml:space="preserve">
+    <value>[{0}]個の回想が解放されました！</value>
+  </data>
+  <data name="ArgErrorUnknown" xml:space="preserve">
+    <value>予期せぬエラーしました。</value>
+  </data>
+  <data name="ArgInvalid" xml:space="preserve">
+    <value>オプション「{0}」の値が無効です。</value>
+  </data>
+  <data name="ArgMissing" xml:space="preserve">
+    <value>オプション「{0}」を指定してください。</value>
+  </data>
+  <data name="ArgUnknown" xml:space="preserve">
+    <value>このオプションは予期していません：</value>
+  </data>
+  <data name="Desc" xml:space="preserve">
+    <value>「{0}」はTyranoScript製ゲームのセーブ改変でCG・回想を解放するツールです。</value>
+  </data>
+  <data name="DryModeNotice" xml:space="preserve">
+    <value>テスト実行モード中です。セーブファイルは変更されません。</value>
+  </data>
+  <data name="ErrorAsarNotFound" xml:space="preserve">
+    <value>[{0}]の「.asar」ファイルが存在しません。</value>
+  </data>
+  <data name="ErrorAsarSav" xml:space="preserve">
+    <value>「.asar」や「.sav」ファイルの処理中にエラーが発生しました。</value>
+  </data>
+  <data name="ErrorHelpCmd" xml:space="preserve">
+    <value>使い方は 「{0} --help」で確認してください。</value>
+  </data>
+  <data name="ErrorSavNotFound" xml:space="preserve">
+    <value>[{0}]の「.sav」ファイルが存在しません。</value>
+  </data>
+  <data name="ExcInvalidSav" xml:space="preserve">
+    <value>「.sav」ファイルが無効です。</value>
+  </data>
+  <data name="ExcInvalidView" xml:space="preserve">
+    <value>「.sav」ファイル内の「{0}」が無効です。</value>
+  </data>
+  <data name="FoundAsarScripts" xml:space="preserve">
+    <value>「.asar」ファイルの内に「{0}」個のシナリオ ファイルを見つかれました。</value>
+  </data>
+  <data name="FoundCGs" xml:space="preserve">
+    <value>[{0}]個の解放可能なCGが見つかれました。</value>
+  </data>
+  <data name="FoundReplays" xml:space="preserve">
+    <value>[{0}]個の解放可能な回想が見つかれました。</value>
+  </data>
+  <data name="FoundScripts" xml:space="preserve">
+    <value>シナリオ ファイル：</value>
+  </data>
+  <data name="HelpTextDesc" xml:space="preserve">
+    <value>{1}説明：{1}    {0}{1}{1}使い方：{1}    tsmu [options] -a &lt;path&gt; -s &lt;path&gt;{1}{1}オプション・Options:</value>
+  </data>
+  <data name="HelpTextOptPath" xml:space="preserve">
+    <value>ファイルのパス</value>
+  </data>
+  <data name="JsonExc" xml:space="preserve">
+    <value>「！注意！」　ファイルが以前に破損している可能性があります。ゲームは正常に動いていますか？
+削除しても構いませんが、これは危険な操作で、進行状況がすべて失われる可能性があります。自己責任で行ってください！</value>
+  </data>
+  <data name="LogLine" xml:space="preserve">
+    <value>=========================================================</value>
+  </data>
+  <data name="LogLineDone" xml:space="preserve">
+    <value>======================　終わりました！ ======================</value>
+  </data>
+  <data name="LogLineTY" xml:space="preserve">
+    <value>===============　ありがとうございました！ ===============</value>
+  </data>
+  <data name="OpenAsar" xml:space="preserve">
+    <value>「.asar」ファイル[{0}]を開いています。</value>
+  </data>
+  <data name="OpenSav" xml:space="preserve">
+    <value>「.sav」ファイル[{0}]を開いています。</value>
+  </data>
+  <data name="SavBackup" xml:space="preserve">
+    <value>セーブファイル「{0}」を「{1}」にバックアップしています。</value>
+  </data>
+  <data name="SavBackupCancel" xml:space="preserve">
+    <value>テスト実行のためバックアップはキャンセルされました。</value>
+  </data>
+  <data name="SavBackupDry" xml:space="preserve">
+    <value>セーブファイル「{0}」を「{1}」にバックアップしようとしていました。</value>
+  </data>
+  <data name="SavingSav" xml:space="preserve">
+    <value>セーブファイル「{0}」を更新しています。</value>
+  </data>
+  <data name="SavingSavDry" xml:space="preserve">
+    <value>セーブファイル「{0}」の更新をしようとしていました。</value>
+  </data>
+  <data name="SavJsonParse" xml:space="preserve">
+    <value>セーブファイルJSONを読み込んでいます。</value>
+  </data>
+  <data name="SavJsonSerialize" xml:space="preserve">
+    <value>セーブファイルJSONを確定しています。</value>
+  </data>
+  <data name="UnlockableCGs" xml:space="preserve">
+    <value>解放可能なCG：</value>
+  </data>
+  <data name="UnlockableReplays" xml:space="preserve">
+    <value>解放可能な回想：</value>
+  </data>
+  <data name="UnlockedCGs" xml:space="preserve">
+    <value>[{0}]個のCGが解放されます！</value>
+  </data>
+  <data name="UnlockedCGsAlr" xml:space="preserve">
+    <value>セーブファイルですでに解放されているCG：</value>
+  </data>
+  <data name="UnlockedReplays" xml:space="preserve">
+    <value>[{0}]個の回想が解放されます！</value>
+  </data>
+  <data name="UnlockedReplaysAlr" xml:space="preserve">
+    <value>セーブファイルですでに解放されている回想：</value>
+  </data>
+</root>
