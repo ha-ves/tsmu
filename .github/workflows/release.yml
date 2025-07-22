@@ -28,7 +28,7 @@ jobs:
 
       - name: Publish Windows x64 (self-contained, single file, trimmed, compressed)
         run: |
-          dotnet publish TyranoScriptMemoryUnlocker \
+          dotnet publish . \
             --configuration Release \
             --runtime win-x64 \
             --self-contained true \
@@ -43,7 +43,7 @@ jobs:
 
       - name: Publish Linux x64 (self-contained, single file, trimmed, compressed)
         run: |
-          dotnet publish TyranoScriptMemoryUnlocker \
+          dotnet publish . \
             --configuration Release \
             --runtime linux-x64 \
             --self-contained true \
