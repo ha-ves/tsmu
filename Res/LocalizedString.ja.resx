@@ -148,7 +148,7 @@
     <value>このオプションは予期していません：</value>
   </data>
   <data name="Desc" xml:space="preserve">
-    <value>「{0}」はTyranoScript製ゲームのセーブ改変でCG・回想を解放するツールです。</value>
+    <value>「{0}」は TyranoScript製ゲームのセーブ改変でCG・回想を解放するツールです。</value>
   </data>
   <data name="DryModeNotice" xml:space="preserve">
     <value>テスト実行モード中です。セーブファイルは変更されません。</value>
@@ -183,11 +183,29 @@
   <data name="FoundScripts" xml:space="preserve">
     <value>シナリオ ファイル：</value>
   </data>
+  <data name="HelpTextAsar" xml:space="preserve">
+    <value>ゲームのシナリオ ファイルを含む「.asar」ファイルのパス（通常は [resources/] フォルダ内）</value>
+  </data>
   <data name="HelpTextDesc" xml:space="preserve">
-    <value>{1}説明：{1}    {0}{1}{1}使い方：{1}    tsmu [options] -a &lt;path&gt; -s &lt;path&gt;{1}{1}オプション・Options:</value>
+    <value>{1}説明：{1}    {0}{1}{1}使い方：{1}    tsmu [options] -a &lt;path&gt; -s &lt;path&gt;{1}{1}    &lt;path&gt; {2}{1}{1}オプション・Options:</value>
+  </data>
+  <data name="HelpTextDryRun" xml:space="preserve">
+    <value>テスト実行モード。セーブファイルを変更せず、実行内容のみを表示します。</value>
+  </data>
+  <data name="HelpTextHelp" xml:space="preserve">
+    <value>この使い方の画面を表示される。</value>
   </data>
   <data name="HelpTextOptPath" xml:space="preserve">
-    <value>ファイルのパス</value>
+    <value>は各ファイルのパス。</value>
+  </data>
+  <data name="HelpTextRequired" xml:space="preserve">
+    <value>「必須なオプション」</value>
+  </data>
+  <data name="HelpTextSav" xml:space="preserve">
+    <value>更新するセーブファイルのパス（通常はゲームのトップ フォルダ内）</value>
+  </data>
+  <data name="HelpTextVerbose" xml:space="preserve">
+    <value>詳細なメッセージを表示します。「-vv」 のように重ねて指定可能（最大2段階）</value>
   </data>
   <data name="JsonExc" xml:space="preserve">
     <value>「！注意！」　ファイルが以前に破損している可能性があります。ゲームは正常に動いていますか？

@@ -7,6 +7,8 @@
 using CommandLine;
 using CommandLine.Text;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Microsoft.VisualBasic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text;
@@ -23,17 +25,20 @@ namespace TyranoScriptMemoryUnlocker
     {
         public class TSMUArgs()
         {
-            [Option('v', "verbose", HelpText = "Increase verbosity. Can be stacked -vv, up to 2 levels.", FlagCounter = true)]
-            public int Verbosity { get; set; }
+            [Option('v', "verbose", FlagCounter = true, HelpText = nameof(LocalizedString.HelpTextVerbose), ResourceType = typeof(LocalizedString))]
+            public int? Verbosity { get; set; }
 
-            [Option('a', "asar", Required = true, HelpText = "Path to the app.asar file containing the game scripts. (typically in 'resources/')")]
-            public string AsarPath { get; set; } = string.Empty;
+            [Option('a', "asar", Required = true, HelpText = nameof(LocalizedString.HelpTextAsar), ResourceType = typeof(LocalizedString))]
+            public string? AsarPath { get; set; }
 
-            [Option('s', "sav", Required = true, HelpText = "Path to the sav(e) file to modify. (typically in game top folder)")]
-            public string SavPath { get; set; } = string.Empty;
+            [Option('s', "sav", Required = true, HelpText = nameof(LocalizedString.HelpTextSav), ResourceType = typeof(LocalizedString))]
+            public string? SavPath { get; set; }
 
-            [Option("dry", HelpText = "Dry run mode. Only show what would be done, without modifying the save file.")]
-            public bool DryRun { get; set; } = false;
+            [Option("dry", HelpText = nameof(LocalizedString.HelpTextDryRun), ResourceType = typeof(LocalizedString))]
+            public bool? DryRun { get; set; }
+
+            [Option('h', HelpText = nameof(LocalizedString.HelpTextHelp), ResourceType = typeof(LocalizedString))]
+            public string? _help { get; set; }
         }
 
         internal const string SearchTopPath = "data/scenario";
@@ -78,6 +83,7 @@ namespace TyranoScriptMemoryUnlocker
             var lic = LocalizedString.AppLic;
             var dsclmr = LocalizedString.AppDisclaimer;
 
+            SentenceBuilder.Factory = () => new LocalizedArgsSentenceBuild();
             var parser = new Parser(with =>
             {
                 with.HelpWriter = null;
@@ -93,13 +99,18 @@ namespace TyranoScriptMemoryUnlocker
             }, args);
             parsed.WithParsed(args =>
             {
-                if (!Path.Exists(args.SavPath = Path.GetFullPath(args.SavPath)))
+                if (args._help != null)
+                {
+                    HelpArgExit(title, desc, build, copr, lic, dsclmr, parsed);
+                    return;
+                }
+                if (!Path.Exists(args.SavPath = Path.GetFullPath(args.SavPath ?? string.Empty)))
                 {
                     ExitArgsError(string.Format(LocalizedString.ErrorSavNotFound, args.SavPath),
                         cmd, title, build, copr, lic, dsclmr);
                     return;
                 }
-                if (!Path.Exists(args.AsarPath = Path.GetFullPath(args.AsarPath)))
+                if (!Path.Exists(args.AsarPath = Path.GetFullPath(args.AsarPath ?? string.Empty)))
                 {
                     ExitArgsError(string.Format(LocalizedString.ErrorAsarNotFound, args.AsarPath), 
                         cmd, title, build, copr, lic, dsclmr);
@@ -110,33 +121,21 @@ namespace TyranoScriptMemoryUnlocker
             {
                 if (errors.IsHelp())
                 {
-                    var helpText = HelpText.AutoBuild(parsed, h =>
-                    {
-                        h.AddEnumValuesToHelpText = true;
-                        h.AutoVersion = false;
-
-                        h.Heading = $"{title} {build}. {copr}.";
-                        h.Copyright = $"{lic} {dsclmr} {Environment.NewLine}";
-                        h.AddPreOptionsText(string.Format(LocalizedString.HelpTextDesc, desc, Environment.NewLine));
-                        return h;
-                    }, e => e);
-
-                    Console.WriteLine(helpText);
-                    Environment.Exit(0);
+                    HelpArgExit(title, desc, build, copr, lic, dsclmr, parsed);
+                    return;
                 }
-                else
+
+                var err = errors.FirstOrDefault() switch
                 {
-                    var err = errors.FirstOrDefault() switch
-                    {
-                        MissingRequiredOptionError m => string.Format(LocalizedString.ArgMissing, $"  '-{m.NameInfo.ShortName}' / '--{m.NameInfo.LongName}'"),
-                        UnknownOptionError u => string.Format(LocalizedString.ArgUnknown, $"  '{(u.Token.Length > 1 ? "--" : '-')}{u.Token}'"),
-                        NamedError n => string.Format(LocalizedString.ArgInvalid, $"  '{n.NameInfo.NameText}'  "),
-                        CommandLine.Error e => $"{LocalizedString.ArgErrorUnknown} ({e.Tag}:{e.GetType()})",
-                        _ => LocalizedString.ArgErrorUnknown
-                    };
+                    MissingRequiredOptionError m => string.Format(LocalizedString.ArgMissing, $"  '-{m.NameInfo.ShortName}' / '--{m.NameInfo.LongName}'"),
+                    UnknownOptionError u => string.Format(LocalizedString.ArgUnknown, $"  '{(u.Token.Length > 1 ? "--" : '-')}{u.Token}'"),
+                    NamedError n => string.Format(LocalizedString.ArgInvalid, $"  '{n.NameInfo.NameText}'  "),
+                    CommandLine.Error e => $"{LocalizedString.ArgErrorUnknown} ({e.Tag}:{e.GetType()})",
+                    _ => LocalizedString.ArgErrorUnknown
+                };
 
-                    ExitArgsError(err, cmd, title, build, copr, lic, dsclmr);
-                }
+                ExitArgsError(err, cmd, title, build, copr, lic, dsclmr);
+                return;
             });
             Args = parsed.Value;
 
@@ -147,7 +146,7 @@ namespace TyranoScriptMemoryUnlocker
                     opt.IncludeScopes = opt.SingleLine = true;
                     opt.TimestampFormat = "[HH:mm:ss.ffffff]";
                 });
-                cfg.SetMinimumLevel((LogLevel)Math.Max((int)(LogLevel.Information - Args.Verbosity), 0));
+                cfg.SetMinimumLevel((LogLevel)Math.Max((int)(LogLevel.Information - Args.Verbosity ?? 0), 0));
             });
             log = logger.CreateLogger(nameof(TSMU));
             var tablelog = LoggerFactory.Create(cfg =>
@@ -158,19 +157,19 @@ namespace TyranoScriptMemoryUnlocker
                     opt.TimestampFormat = "[HH:mm:ss.ffffff]";
                     opt.SingleLine = false;
                 });
-                cfg.SetMinimumLevel((LogLevel)Math.Max((int)(LogLevel.Information - Args.Verbosity), 0));
+                cfg.SetMinimumLevel((LogLevel)Math.Max((int)(LogLevel.Information - Args.Verbosity ?? 0), 0));
             })
             .CreateLogger(nameof(TSMU));
 
             log.LogInformation("{title} {build} {copr}. {lic} {dsclmr}", title, build, copr, lic, dsclmr);
 
-            if (Args.DryRun)
+            if (Args.DryRun ?? false)
                 log.LogInformation("{Dry}", LocalizedString.DryModeNotice);
 
             try
             {
                 log.LogDebug("{asar}", string.Format(LocalizedString.OpenAsar, Args.AsarPath));
-                using var asar = AsarFile.Open(Args.AsarPath);
+                using var asar = AsarFile.Open(Args.AsarPath ?? string.Empty);
                 var scripts = FindFilesByExt(asar, ScriptExt, SearchTopPath).ToList();
 
                 if (log.IsEnabled(LogLevel.Trace))
@@ -195,20 +194,20 @@ namespace TyranoScriptMemoryUnlocker
                 log.LogInformation("{count}", string.Format(LocalizedString.FoundReplays, replaygallery.Count));
 
                 FileAccess accs = FileAccess.ReadWrite;
-                if (Args.DryRun)
+                if (Args.DryRun ?? false)
                     accs = FileAccess.Read; // Read-only access for dry run
 
                 log.LogInformation("{sav}", string.Format(LocalizedString.OpenSav, Args.SavPath));
-                using var savfs = new FileStream(Args.SavPath, FileMode.Open, accs);
+                using var savfs = new FileStream(Args.SavPath ?? string.Empty, FileMode.Open, accs);
                 string bakfile;
                 int iter = 0;
                 do
                 {
-                    bakfile = Path.ChangeExtension(Args.SavPath, $"bak{DateTime.Now:yyyyMMddHHmmss}.{iter++}{Path.GetExtension(Args.SavPath)}");
+                    bakfile = Path.ChangeExtension(Args.SavPath ?? string.Empty, $"bak{DateTime.Now:yyyyMMddHHmmss}.{iter++}{Path.GetExtension(Args.SavPath)}");
                 }
                 while (File.Exists(bakfile));
 
-                if (!Args.DryRun)
+                if (!Args.DryRun ?? false)
                 {
                     log.LogDebug("{bak}", string.Format(LocalizedString.SavBackup, Args.SavPath, bakfile));
 
@@ -295,7 +294,7 @@ namespace TyranoScriptMemoryUnlocker
                 var savjsoned = savjson.ToJsonString();
                 var savjsonen = Uri.EscapeDataString(savjsoned);
 
-                if (Args.DryRun)
+                if (Args.DryRun ?? false)
                 {
                     log.LogInformation("{dry}", LocalizedString.DryModeNotice);
                     log.LogDebug("{sav}", string.Format(LocalizedString.SavingSavDry, Args.SavPath));
@@ -327,6 +326,25 @@ namespace TyranoScriptMemoryUnlocker
                 log?.LogError(exc, "{exc}", LocalizedString.ErrorAsarSav);
                 Environment.Exit(1);
             }
+        }
+
+        private static void HelpArgExit(string? title, string desc, string? build, string? copr, string lic, string dsclmr, ParserResult<TSMUArgs> parsed)
+        {
+            var helpText = HelpText.AutoBuild(parsed, h =>
+            {
+                h.AddEnumValuesToHelpText = true;
+                h.AutoVersion = false;
+
+                h.Heading = $"{title} {build}. {copr}.";
+                h.Copyright = $"{lic} {dsclmr} {Environment.NewLine}";
+                h.AddPreOptionsText(string.Format(LocalizedString.HelpTextDesc,
+                    desc, Environment.NewLine, LocalizedString.HelpTextOptPath));
+
+                return h;
+            }, e => e);
+
+            Console.WriteLine(helpText);
+            Environment.Exit(0);
         }
 
         private static void ExitArgsError(string? err, string? cmd, string? title, string? build, string? copr, string? lic, string? dsclmr)

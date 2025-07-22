@@ -22,7 +22,7 @@ See <https://www.gnu.org/licenses/>.
 	  
 	  <Copyright>(C) 2025 $(Company), $(Authors)</Copyright>
 
-	  <Version>0.3.0</Version>
+	  <Version>0.3.2</Version>
 	  <InformationalVersion>v$(Version)</InformationalVersion>
 	  <Changelog>
 		  - v0.1.0: Initial release, basic functionality implemented.
@@ -30,7 +30,9 @@ See <https://www.gnu.org/licenses/>.
 		            Better implementation of dry-run mode.
 		  - v0.3.0: Localization support added.
 					Improved error handling and logging.
-	  </Changelog>
+		  - v0.3.1: Help text localization.
+					Localization fixes and improvements.
+		</Changelog>
   </PropertyGroup>
 
   <ItemGroup>
@@ -48,7 +50,7 @@ See <https://www.gnu.org/licenses/>.
 
   <ItemGroup>
     <EmbeddedResource Update="Res\LocalizedString.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>LocalizedString.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>

@@ -22,7 +22,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class LocalizedString {
+    public class LocalizedString {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TyranoScriptMemoryUnlocker.Res.LocalizedString", typeof(LocalizedString).Assembly);
@@ -51,7 +51,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Not affiliated with TyranoScript..
         /// </summary>
-        internal static string AppDisclaimer {
+        public static string AppDisclaimer {
             get {
                 return ResourceManager.GetString("AppDisclaimer", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Licensed under AGPLv3-and-later.
         /// </summary>
-        internal static string AppLic {
+        public static string AppLic {
             get {
                 return ResourceManager.GetString("AppLic", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to The save file has been updated successfully..
         /// </summary>
-        internal static string AppSuccess_Line1 {
+        public static string AppSuccess_Line1 {
             get {
                 return ResourceManager.GetString("AppSuccess_Line1", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Enjoy the unlocked contents in CG or Memory mode!.
         /// </summary>
-        internal static string AppSuccess_Line2 {
+        public static string AppSuccess_Line2 {
             get {
                 return ResourceManager.GetString("AppSuccess_Line2", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Unlocked CGs: {0}.
         /// </summary>
-        internal static string AppSuccess_Line3 {
+        public static string AppSuccess_Line3 {
             get {
                 return ResourceManager.GetString("AppSuccess_Line3", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Unlocked Replays: {0}.
         /// </summary>
-        internal static string AppSuccess_Line4 {
+        public static string AppSuccess_Line4 {
             get {
                 return ResourceManager.GetString("AppSuccess_Line4", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Unknown error..
         /// </summary>
-        internal static string ArgErrorUnknown {
+        public static string ArgErrorUnknown {
             get {
                 return ResourceManager.GetString("ArgErrorUnknown", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Invalid for arg: {0}.
         /// </summary>
-        internal static string ArgInvalid {
+        public static string ArgInvalid {
             get {
                 return ResourceManager.GetString("ArgInvalid", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Missing required option: {0}.
         /// </summary>
-        internal static string ArgMissing {
+        public static string ArgMissing {
             get {
                 return ResourceManager.GetString("ArgMissing", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Unknown option:.
         /// </summary>
-        internal static string ArgUnknown {
+        public static string ArgUnknown {
             get {
                 return ResourceManager.GetString("ArgUnknown", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to {0} is a tool to unlock CGs and replays in TyranoScript-based games/visual novels by modifying the save file..
         /// </summary>
-        internal static string Desc {
+        public static string Desc {
             get {
                 return ResourceManager.GetString("Desc", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Dry run mode enabled. No changes will be made to the save file..
         /// </summary>
-        internal static string DryModeNotice {
+        public static string DryModeNotice {
             get {
                 return ResourceManager.GetString("DryModeNotice", resourceCulture);
             }
@@ -171,7 +171,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Error: .asar file path &apos;{0}&apos; does not exist..
         /// </summary>
-        internal static string ErrorAsarNotFound {
+        public static string ErrorAsarNotFound {
             get {
                 return ResourceManager.GetString("ErrorAsarNotFound", resourceCulture);
             }
@@ -180,7 +180,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to An error occurred while processing the asar or save file..
         /// </summary>
-        internal static string ErrorAsarSav {
+        public static string ErrorAsarSav {
             get {
                 return ResourceManager.GetString("ErrorAsarSav", resourceCulture);
             }
@@ -189,7 +189,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Try &apos;{0} --help&apos; for more information..
         /// </summary>
-        internal static string ErrorHelpCmd {
+        public static string ErrorHelpCmd {
             get {
                 return ResourceManager.GetString("ErrorHelpCmd", resourceCulture);
             }
@@ -198,7 +198,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Error: .sav file path &apos;{0}&apos; does not exist..
         /// </summary>
-        internal static string ErrorSavNotFound {
+        public static string ErrorSavNotFound {
             get {
                 return ResourceManager.GetString("ErrorSavNotFound", resourceCulture);
             }
@@ -207,7 +207,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Invalid .sav file..
         /// </summary>
-        internal static string ExcInvalidSav {
+        public static string ExcInvalidSav {
             get {
                 return ResourceManager.GetString("ExcInvalidSav", resourceCulture);
             }
@@ -216,7 +216,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Invalid [&apos;{0}&apos;] in .sav file..
         /// </summary>
-        internal static string ExcInvalidView {
+        public static string ExcInvalidView {
             get {
                 return ResourceManager.GetString("ExcInvalidView", resourceCulture);
             }
@@ -225,7 +225,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Found {0} script files in asar..
         /// </summary>
-        internal static string FoundAsarScripts {
+        public static string FoundAsarScripts {
             get {
                 return ResourceManager.GetString("FoundAsarScripts", resourceCulture);
             }
@@ -234,7 +234,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Found {0} Unlockable CGs..
         /// </summary>
-        internal static string FoundCGs {
+        public static string FoundCGs {
             get {
                 return ResourceManager.GetString("FoundCGs", resourceCulture);
             }
@@ -243,7 +243,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Found {0} Unlockable Replays..
         /// </summary>
-        internal static string FoundReplays {
+        public static string FoundReplays {
             get {
                 return ResourceManager.GetString("FoundReplays", resourceCulture);
             }
@@ -252,34 +252,88 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Scenario scripts:.
         /// </summary>
-        internal static string FoundScripts {
+        public static string FoundScripts {
             get {
                 return ResourceManager.GetString("FoundScripts", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {1}Description:{1}    {0}{1}{1}Usage:{1}    tsmu [options] -a &lt;path&gt; -s &lt;path&gt;{1}{1}Options:.
+        ///   Looks up a localized string similar to Path to the app.asar file containing the game scripts. (typically in &apos;resources/&apos;).
         /// </summary>
-        internal static string HelpTextDesc {
+        public static string HelpTextAsar {
+            get {
+                return ResourceManager.GetString("HelpTextAsar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {1}Description:{1}    {0}{1}{1}Usage:{1}    tsmu [options] -a &lt;path&gt; -s &lt;path&gt;{1}{1}    &lt;path&gt; {2}{1}{1}Options:.
+        /// </summary>
+        public static string HelpTextDesc {
             get {
                 return ResourceManager.GetString("HelpTextDesc", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File&apos;s path..
+        ///   Looks up a localized string similar to Dry run mode. Only show what would be done, without modifying the save file..
         /// </summary>
-        internal static string HelpTextOptPath {
+        public static string HelpTextDryRun {
+            get {
+                return ResourceManager.GetString("HelpTextDryRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Displays this help screen..
+        /// </summary>
+        public static string HelpTextHelp {
+            get {
+                return ResourceManager.GetString("HelpTextHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to is the File&apos;s path..
+        /// </summary>
+        public static string HelpTextOptPath {
             get {
                 return ResourceManager.GetString("HelpTextOptPath", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;Required Option&gt;.
+        /// </summary>
+        public static string HelpTextRequired {
+            get {
+                return ResourceManager.GetString("HelpTextRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path to the sav(e) file to modify. (typically in game top folder).
+        /// </summary>
+        public static string HelpTextSav {
+            get {
+                return ResourceManager.GetString("HelpTextSav", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Increase verbosity. Can be stacked -vv, up to 2 levels..
+        /// </summary>
+        public static string HelpTextVerbose {
+            get {
+                return ResourceManager.GetString("HelpTextVerbose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Corrupted? Is the game running fine? (!!)Delete and re-run the game(!!) ONLY IF YOU ARE SURE (!!).
         /// </summary>
-        internal static string JsonExc {
+        public static string JsonExc {
             get {
                 return ResourceManager.GetString("JsonExc", resourceCulture);
             }
@@ -288,7 +342,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to =========================================================.
         /// </summary>
-        internal static string LogLine {
+        public static string LogLine {
             get {
                 return ResourceManager.GetString("LogLine", resourceCulture);
             }
@@ -297,7 +351,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to ======================== DONE !! ========================.
         /// </summary>
-        internal static string LogLineDone {
+        public static string LogLineDone {
             get {
                 return ResourceManager.GetString("LogLineDone", resourceCulture);
             }
@@ -306,7 +360,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to ====================== THANK YOU ! ======================.
         /// </summary>
-        internal static string LogLineTY {
+        public static string LogLineTY {
             get {
                 return ResourceManager.GetString("LogLineTY", resourceCulture);
             }
@@ -315,7 +369,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Opening asar file: {0}.
         /// </summary>
-        internal static string OpenAsar {
+        public static string OpenAsar {
             get {
                 return ResourceManager.GetString("OpenAsar", resourceCulture);
             }
@@ -324,7 +378,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Opening sav file: {0}.
         /// </summary>
-        internal static string OpenSav {
+        public static string OpenSav {
             get {
                 return ResourceManager.GetString("OpenSav", resourceCulture);
             }
@@ -333,7 +387,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Backing up save file &apos;{0}&apos;-&gt;&apos;{1}&apos;.
         /// </summary>
-        internal static string SavBackup {
+        public static string SavBackup {
             get {
                 return ResourceManager.GetString("SavBackup", resourceCulture);
             }
@@ -342,7 +396,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Backup cancelled because of dry run..
         /// </summary>
-        internal static string SavBackupCancel {
+        public static string SavBackupCancel {
             get {
                 return ResourceManager.GetString("SavBackupCancel", resourceCulture);
             }
@@ -351,7 +405,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Would backup save file &apos;{0}&apos;-&gt;&apos;{1}&apos;.
         /// </summary>
-        internal static string SavBackupDry {
+        public static string SavBackupDry {
             get {
                 return ResourceManager.GetString("SavBackupDry", resourceCulture);
             }
@@ -360,7 +414,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Saving changes to the save file: {0}.
         /// </summary>
-        internal static string SavingSav {
+        public static string SavingSav {
             get {
                 return ResourceManager.GetString("SavingSav", resourceCulture);
             }
@@ -369,7 +423,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Would write to {0}.
         /// </summary>
-        internal static string SavingSavDry {
+        public static string SavingSavDry {
             get {
                 return ResourceManager.GetString("SavingSavDry", resourceCulture);
             }
@@ -378,7 +432,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Parsing list from JSON..
         /// </summary>
-        internal static string SavJsonParse {
+        public static string SavJsonParse {
             get {
                 return ResourceManager.GetString("SavJsonParse", resourceCulture);
             }
@@ -387,7 +441,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Serializing changes to JSON..
         /// </summary>
-        internal static string SavJsonSerialize {
+        public static string SavJsonSerialize {
             get {
                 return ResourceManager.GetString("SavJsonSerialize", resourceCulture);
             }
@@ -396,7 +450,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Unlockable CGs:.
         /// </summary>
-        internal static string UnlockableCGs {
+        public static string UnlockableCGs {
             get {
                 return ResourceManager.GetString("UnlockableCGs", resourceCulture);
             }
@@ -405,7 +459,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Unlockable Replays:.
         /// </summary>
-        internal static string UnlockableReplays {
+        public static string UnlockableReplays {
             get {
                 return ResourceManager.GetString("UnlockableReplays", resourceCulture);
             }
@@ -414,7 +468,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Now Unlocked {0} CGs..
         /// </summary>
-        internal static string UnlockedCGs {
+        public static string UnlockedCGs {
             get {
                 return ResourceManager.GetString("UnlockedCGs", resourceCulture);
             }
@@ -423,7 +477,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Already Unlocked CGs in save:.
         /// </summary>
-        internal static string UnlockedCGsAlr {
+        public static string UnlockedCGsAlr {
             get {
                 return ResourceManager.GetString("UnlockedCGsAlr", resourceCulture);
             }
@@ -432,7 +486,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Now Unlocked {0} Replays..
         /// </summary>
-        internal static string UnlockedReplays {
+        public static string UnlockedReplays {
             get {
                 return ResourceManager.GetString("UnlockedReplays", resourceCulture);
             }
@@ -441,7 +495,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         /// <summary>
         ///   Looks up a localized string similar to Already Unlocked Replays in save:.
         /// </summary>
-        internal static string UnlockedReplaysAlr {
+        public static string UnlockedReplaysAlr {
             get {
                 return ResourceManager.GetString("UnlockedReplaysAlr", resourceCulture);
             }

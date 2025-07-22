@@ -183,11 +183,29 @@
   <data name="FoundScripts" xml:space="preserve">
     <value>Scenario scripts:</value>
   </data>
+  <data name="HelpTextAsar" xml:space="preserve">
+    <value>Path to the app.asar file containing the game scripts. (typically in 'resources/')</value>
+  </data>
   <data name="HelpTextDesc" xml:space="preserve">
-    <value>{1}Description:{1}    {0}{1}{1}Usage:{1}    tsmu [options] -a &lt;path&gt; -s &lt;path&gt;{1}{1}Options:</value>
+    <value>{1}Description:{1}    {0}{1}{1}Usage:{1}    tsmu [options] -a &lt;path&gt; -s &lt;path&gt;{1}{1}    &lt;path&gt; {2}{1}{1}Options:</value>
+  </data>
+  <data name="HelpTextDryRun" xml:space="preserve">
+    <value>Dry run mode. Only show what would be done, without modifying the save file.</value>
+  </data>
+  <data name="HelpTextHelp" xml:space="preserve">
+    <value>Displays this help screen.</value>
   </data>
   <data name="HelpTextOptPath" xml:space="preserve">
-    <value>File's path.</value>
+    <value>is the File's path.</value>
+  </data>
+  <data name="HelpTextRequired" xml:space="preserve">
+    <value>&lt;Required Option&gt;</value>
+  </data>
+  <data name="HelpTextSav" xml:space="preserve">
+    <value>Path to the sav(e) file to modify. (typically in game top folder)</value>
+  </data>
+  <data name="HelpTextVerbose" xml:space="preserve">
+    <value>Increase verbosity. Can be stacked -vv, up to 2 levels.</value>
   </data>
   <data name="JsonExc" xml:space="preserve">
     <value>Corrupted? Is the game running fine? (!!)Delete and re-run the game(!!) ONLY IF YOU ARE SURE (!!)</value>
