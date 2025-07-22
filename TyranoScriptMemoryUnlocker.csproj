@@ -22,7 +22,7 @@ See <https://www.gnu.org/licenses/>.
 	  
 	  <Copyright>(C) 2025 $(Company), $(Authors)</Copyright>
 
-	  <Version>0.3.2</Version>
+	  <Version>0.3.4</Version>
 	  <InformationalVersion>v$(Version)</InformationalVersion>
 	  <Changelog>
 		  - v0.1.0: Initial release, basic functionality implemented.
@@ -36,6 +36,7 @@ See <https://www.gnu.org/licenses/>.
 		  - v0.3.3: Revert help option addition.
 					Added license and readme to release files.
 					Miniscule typos fixed.
+		  - v0.3.4: Fix command line argument parsing issues. (revert nullables)
 		</Changelog>
   </PropertyGroup>
 

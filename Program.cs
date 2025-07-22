@@ -26,27 +26,16 @@ namespace TyranoScriptMemoryUnlocker
         public class TSMUArgs
         {
             [Option('v', "verbose", FlagCounter = true, HelpText = nameof(LocalizedString.HelpTextVerbose), ResourceType = typeof(LocalizedString))]
-            public int? Verbosity { get; set; }
+            public int Verbosity { get; set; } = 0;
 
             [Option('a', "asar", Required = true, HelpText = nameof(LocalizedString.HelpTextAsar), ResourceType = typeof(LocalizedString))]
-            public string? AsarPath { get; set; }
+            public string AsarPath { get; set; } = string.Empty;
 
             [Option('s', "sav", Required = true, HelpText = nameof(LocalizedString.HelpTextSav), ResourceType = typeof(LocalizedString))]
-            public string? SavPath { get; set; }
+            public string SavPath { get; set; } = string.Empty;
 
             [Option("dry", HelpText = nameof(LocalizedString.HelpTextDryRun), ResourceType = typeof(LocalizedString))]
-            public bool? DryRun { get; set; }
-
-            public TSMUArgs()
-            {
-                // This is used to preserve the help texts for the command line arguments.
-                // It is necessary to ensure that the help texts are not trimmed by the compiler.
-                _ = LocalizedString.HelpTextVerbose;
-                _ = LocalizedString.HelpTextAsar;
-                _ = LocalizedString.HelpTextSav;
-                _ = LocalizedString.HelpTextDryRun;
-                _ = LocalizedString.HelpTextHelp;
-            }
+            public bool DryRun { get; set; } = false;
         }
 
         internal const string SearchTopPath = "data/scenario";
@@ -68,6 +57,9 @@ namespace TyranoScriptMemoryUnlocker
         [SuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code", 
             Justification = Suppressions.JsonTrimmingJustification)]
 #pragma warning restore IDE0079 // Remove unnecessary suppression
+        [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(TSMUArgs))]
+        [DynamicDependency(DynamicallyAccessedMemberTypes.PublicProperties, typeof(LocalizedString))]
+        [DynamicDependency(DynamicallyAccessedMemberTypes.PublicProperties, typeof(LocalizedArgsSentenceBuild))]
         public static void Main(string[] args)
         {
             Console.OutputEncoding = new UTF8Encoding(false);
@@ -98,13 +90,7 @@ namespace TyranoScriptMemoryUnlocker
                 with.AutoVersion = false;
                 with.AllowMultiInstance = true;
             });
-            var parsed = parser.ParseArguments(() => new TSMUArgs()
-            {
-                AsarPath = string.Empty,
-                SavPath = string.Empty,
-                Verbosity = 0,
-                DryRun = false
-            }, args);
+            var parsed = parser.ParseArguments<TSMUArgs>(args);
             parsed.WithParsed(args =>
             {
                 if (!Path.Exists(args.SavPath = Path.GetFullPath(args.SavPath ?? string.Empty)))
@@ -149,7 +135,7 @@ namespace TyranoScriptMemoryUnlocker
                     opt.IncludeScopes = opt.SingleLine = true;
                     opt.TimestampFormat = "[HH:mm:ss.ffffff]";
                 });
-                cfg.SetMinimumLevel((LogLevel)Math.Max((int)(LogLevel.Information - Args.Verbosity ?? 0), 0));
+                cfg.SetMinimumLevel((LogLevel)Math.Max((int)(LogLevel.Information - Args.Verbosity), 0));
             });
             log = logger.CreateLogger(nameof(TSMU));
             var tablelog = LoggerFactory.Create(cfg =>
@@ -160,13 +146,13 @@ namespace TyranoScriptMemoryUnlocker
                     opt.TimestampFormat = "[HH:mm:ss.ffffff]";
                     opt.SingleLine = false;
                 });
-                cfg.SetMinimumLevel((LogLevel)Math.Max((int)(LogLevel.Information - Args.Verbosity ?? 0), 0));
+                cfg.SetMinimumLevel((LogLevel)Math.Max((int)(LogLevel.Information - Args.Verbosity), 0));
             })
             .CreateLogger(nameof(TSMU));
 
             log.LogInformation("{title} {build} {copr}. {lic} {dsclmr}", title, build, copr, lic, dsclmr);
 
-            if (Args.DryRun ?? false)
+            if (Args.DryRun)
                 log.LogInformation("{Dry}", LocalizedString.DryModeNotice);
 
             try
@@ -197,7 +183,7 @@ namespace TyranoScriptMemoryUnlocker
                 log.LogInformation("{count}", string.Format(LocalizedString.FoundReplays, replaygallery.Count));
 
                 FileAccess accs = FileAccess.ReadWrite;
-                if (Args.DryRun ?? false)
+                if (Args.DryRun)
                     accs = FileAccess.Read; // Read-only access for dry run
 
                 log.LogInformation("{sav}", string.Format(LocalizedString.OpenSav, Args.SavPath));
@@ -210,7 +196,7 @@ namespace TyranoScriptMemoryUnlocker
                 }
                 while (File.Exists(bakfile));
 
-                if (!Args.DryRun ?? false)
+                if (!Args.DryRun)
                 {
                     log.LogDebug("{bak}", string.Format(LocalizedString.SavBackup, Args.SavPath, bakfile));
 
@@ -297,7 +283,7 @@ namespace TyranoScriptMemoryUnlocker
                 var savjsoned = savjson.ToJsonString();
                 var savjsonen = Uri.EscapeDataString(savjsoned);
 
-                if (Args.DryRun ?? false)
+                if (Args.DryRun)
                 {
                     log.LogInformation("{dry}", LocalizedString.DryModeNotice);
                     log.LogDebug("{sav}", string.Format(LocalizedString.SavingSavDry, Args.SavPath));
