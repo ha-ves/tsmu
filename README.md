@@ -20,7 +20,7 @@
 ## 使い方
 
 ### 公開済み実行ファイルの使用
-最新の実行ファイルは [Releases ページ](/releases) からダウンロードできます。
+最新の実行ファイルは [Releases ページ](https://github.com/ha-ves/tsmu/releases) からダウンロードできます。
 
 ダウンロードまたはビルドした後、以下のように実行します：
 
@@ -75,7 +75,7 @@ tsmu -a resources/app.asar -s save.sav
 ## Usage
 
 ### Using the Published Executable
-Download the latest executable from the [Releases page](/releases).
+Download the latest executable from the [Releases page](https://github.com/ha-ves/tsmu/releases).
 
 After downloading or building, run:
 
