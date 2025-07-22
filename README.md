@@ -1,9 +1,65 @@
+[English](#tyranoscriptmemoryunlocker-eng)
 # TyranoScriptMemoryUnlocker
+
+**TyranoScriptMemoryUnlocker (TSMU)** は、TyranoScript製ゲームのCG・回想モードのコンテンツをすべて解放するツールです。ゲームの app.asar ファイルが読み込まれ、解放可能なCG・回想に応じてセーブファイルが更新されます。
+
+### **メモ：**
+<u>このツールは、**TyranoScript V400** 以降の特定の [CG & 回想モード機能](https://tyrano.jp/usage/tech/cg) を使用しているゲームでのみ動作します。</u>
+
+## 機能
+- TyranoScript製ゲームのCG・回想モードのコンテンツをすべて解放する
+- 変更前に元のセーブファイルをバックアップ
+- テスト実行モード対応（ファイルを変更せず、実行内容のみ表示）
+- 詳細なメッセージ・ログ出力
+
+## 必要環境
+- .NET 9 SDK（ソースからビルドする場合）
+- ゲームの `app.asar` ファイル（通常は `resources/` フォルダ内）
+- ゲームのセーブファイル（通常はゲームのトップ フォルダ内）
+
+## 使い方
+
+### 公開済み実行ファイルの使用
+最新の実行ファイルは [Releases ページ](https://github.com/HaveS/TyranoScriptMemoryUnlocker/releases) からダウンロードできます。
+
+ダウンロードまたはビルドした後、以下のように実行します：
+
+```
+tsmu -a <app.asarのパス> -s <save.savのパス> [--dry] [-v|-vv]
+```
+
+### dotnet run（ソースから実行）
+```
+dotnet run --project TyranoScriptMemoryUnlocker \
+    -a <app.asarのパス> \
+    -s <save.savのパス> [--dry] [-v|-vv]
+```
+
+### オプション
+- `-a, --asar`   ゲームの「.asar」ファイルへのパス（必須）
+- `-s, --sav`    セーブファイルへのパス（必須）
+- `--dry`        テスト実行モード（変更なし）
+- `-v, -vv`      詳細なメッセージを表示（最大2段階）
+
+## 使用例
+```
+tsmu -a resources/app.asar -s save.sav
+```
+---
+# ライセンス
+このプログラムは「AGPLv3-and-later」ライセンスのもとで提供されています。詳細は [LICENSE](LICENSE) を参照してください。
+
+# 免責事項
+**本ソフトウェアは独立したプロジェクトであり、TyranoScriptとは一切関係ありません。TyranoScriptのコードを実行または含んでいません。TyranoScriptによって生成されたファイルを読み取り・更新しますが、TyranoScriptプロジェクトの一部ではありません。**
+
+---
+
+# TyranoScriptMemoryUnlocker Eng
 
 **TyranoScriptMemoryUnlocker (TSMU)** is a utility for unlocking all CGs and replay scenes in save files of games built with TyranoScript. It works by analyzing the game's `app.asar` archive and updating the save file to mark all unlockable content as unlocked.
 
 ### **Note:**
-This tool only works for games using the specific [CG & Memory Mode features](https://tyrano.jp/usage/tech/cg) on **TyranoScript V400** or later.
+<u>This tool only works for games using the specific [CG & Memory Mode feature](https://tyranoscript.com/usage/tech/cg) on **TyranoScript V400** or later.</u>
 
 ## Features
 - Unlock all CGs and replay scenes in TyranoScript game save files
@@ -19,10 +75,12 @@ This tool only works for games using the specific [CG & Memory Mode features](ht
 ## Usage
 
 ### Using the Published Executable
-After downloading or building the executable (e.g. `TyranoScriptMemoryUnlocker.exe`):
+Download the latest executable from the [Releases page](https://github.com/HaveS/TyranoScriptMemoryUnlocker/releases).
+
+After downloading or building, run:
 
 ```
-TyranoScriptMemoryUnlocker.exe -a <path-to-app.asar> -s <path-to-save.sav> [--dry] [-v|-vv]
+tsmu -a <path-to-app.asar> -s <path-to-save.sav> [--dry] [-v|-vv]
 ```
 
 ### Using dotnet run (from source)
@@ -40,7 +98,7 @@ dotnet run --project TyranoScriptMemoryUnlocker \
 
 ## Example
 ```
-TyranoScriptMemoryUnlocker.exe -a resources/app.asar -s save.sav
+tsmu -a resources/app.asar -s save.sav
 ```
 ---
 # License
