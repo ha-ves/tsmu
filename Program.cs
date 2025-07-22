@@ -23,7 +23,7 @@ namespace TyranoScriptMemoryUnlocker
 {
     public class TSMU
     {
-        public class TSMUArgs()
+        public class TSMUArgs
         {
             [Option('v', "verbose", FlagCounter = true, HelpText = nameof(LocalizedString.HelpTextVerbose), ResourceType = typeof(LocalizedString))]
             public int? Verbosity { get; set; }
@@ -39,6 +39,17 @@ namespace TyranoScriptMemoryUnlocker
 
             [Option('h', HelpText = nameof(LocalizedString.HelpTextHelp), ResourceType = typeof(LocalizedString))]
             public string? _help { get; set; }
+
+            public TSMUArgs()
+            {
+                // This is used to preserve the help texts for the command line arguments.
+                // It is necessary to ensure that the help texts are not trimmed by the compiler.
+                _ = LocalizedString.HelpTextVerbose;
+                _ = LocalizedString.HelpTextAsar;
+                _ = LocalizedString.HelpTextSav;
+                _ = LocalizedString.HelpTextDryRun;
+                _ = LocalizedString.HelpTextHelp;
+            }
         }
 
         internal const string SearchTopPath = "data/scenario";

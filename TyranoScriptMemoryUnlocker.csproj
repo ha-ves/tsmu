@@ -32,6 +32,7 @@ See <https://www.gnu.org/licenses/>.
 					Improved error handling and logging.
 		  - v0.3.1: Help text localization.
 					Localization fixes and improvements.
+		  - v0.3.2: Fix command line argument parsing issues.
 		</Changelog>
   </PropertyGroup>
 
