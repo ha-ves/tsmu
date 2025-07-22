@@ -21,7 +21,7 @@ jobs:
         run: |
           VERSION="${GITHUB_REF#refs/tags/v}"
           echo "Setting version to $VERSION in csproj"
-          sed -i 's|<Version>.*</Version>|<Version>'"$VERSION"'</Version>|' tsmu/TyranoScriptMemoryUnlocker.csproj
+          sed -i 's|<Version>.*</Version>|<Version>'"$VERSION"'</Version>|' TyranoScriptMemoryUnlocker.csproj
 
       # - name: Restore dependencies
       #   run: dotnet restore tsmu/TyranoScriptMemoryUnlocker.csproj
