@@ -22,6 +22,7 @@ jobs:
           VERSION="${GITHUB_REF#refs/tags/v}"
           echo "Setting version to $VERSION in csproj"
           sed -i 's|<Version>.*</Version>|<Version>'"$VERSION"'</Version>|' TyranoScriptMemoryUnlocker.csproj
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       # - name: Restore dependencies
       #   run: dotnet restore tsmu/TyranoScriptMemoryUnlocker.csproj
@@ -57,17 +58,18 @@ jobs:
             --output ./publish/linux-x64
 
       # Find the output executable names
-      - name: Get Windows executable
+      - name: Zip Windows
         id: winexe
         run: |
-          echo "file=./publish/win-x64/tsmu.exe" >> $GITHUB_OUTPUT
+          zip -j ./publish/win-x64/tsmu-win-x64-${{ env.VERSION }}.zip ./publish/win-x64/tsmu.exe ./LICENSE ./README.md
+          echo "file=./publish/win-x64/tsmu-win-x64-${{ env.VERSION }}.zip" >> $GITHUB_OUTPUT
 
-      - name: Tar and gzip Linux executable
+      - name: Tar and gzip Linux
         id: linuxexe
         run: |
-          tar -cvf - ./publish/linux-x64/tsmu | gzip -9 > ./publish/linux-x64/tsmu.tar.gz
-          echo "file=./publish/linux-x64/tsmu.tar.gz" >> $GITHUB_OUTPUT
-          
+          tar -cvf - ./publish/linux-x64/tsmu ./LICENSE ./README.md | gzip -9 > ./publish/linux-x64/tsmu-linux-x64-${{ env.VERSION }}.tar.gz
+          echo "file=./publish/linux-x64/tsmu-linux-x64-${{ env.VERSION }}.tar.gz" >> $GITHUB_OUTPUT
+
       - name: Release
         uses: softprops/action-gh-release@v2
         if: github.ref_type == 'tag'

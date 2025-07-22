@@ -121,7 +121,7 @@
     <value>Not affiliated with TyranoScript.</value>
   </data>
   <data name="AppLic" xml:space="preserve">
-    <value>Licensed under AGPLv3-and-later</value>
+    <value>Licensed under AGPLv3-and-later.</value>
   </data>
   <data name="AppSuccess_Line1" xml:space="preserve">
     <value>The save file has been updated successfully.</value>

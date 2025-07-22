@@ -70,7 +70,7 @@ namespace TyranoScriptMemoryUnlocker.Res {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Licensed under AGPLv3-and-later.
+        ///   Looks up a localized string similar to Licensed under AGPLv3-and-later..
         /// </summary>
         public static string AppLic {
             get {

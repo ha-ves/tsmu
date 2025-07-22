@@ -37,9 +37,6 @@ namespace TyranoScriptMemoryUnlocker
             [Option("dry", HelpText = nameof(LocalizedString.HelpTextDryRun), ResourceType = typeof(LocalizedString))]
             public bool? DryRun { get; set; }
 
-            [Option('h', HelpText = nameof(LocalizedString.HelpTextHelp), ResourceType = typeof(LocalizedString))]
-            public string? _help { get; set; }
-
             public TSMUArgs()
             {
                 // This is used to preserve the help texts for the command line arguments.
@@ -110,11 +107,6 @@ namespace TyranoScriptMemoryUnlocker
             }, args);
             parsed.WithParsed(args =>
             {
-                if (args._help != null)
-                {
-                    HelpArgExit(title, desc, build, copr, lic, dsclmr, parsed);
-                    return;
-                }
                 if (!Path.Exists(args.SavPath = Path.GetFullPath(args.SavPath ?? string.Empty)))
                 {
                     ExitArgsError(string.Format(LocalizedString.ErrorSavNotFound, args.SavPath),
@@ -346,7 +338,7 @@ namespace TyranoScriptMemoryUnlocker
                 h.AddEnumValuesToHelpText = true;
                 h.AutoVersion = false;
 
-                h.Heading = $"{title} {build}. {copr}.";
+                h.Heading = $"{title} {build} {copr}.";
                 h.Copyright = $"{lic} {dsclmr} {Environment.NewLine}";
                 h.AddPreOptionsText(string.Format(LocalizedString.HelpTextDesc,
                     desc, Environment.NewLine, LocalizedString.HelpTextOptPath));
@@ -362,8 +354,8 @@ namespace TyranoScriptMemoryUnlocker
         {
             var errText = new HelpText
             {
-                Heading = $"{title} {build}. {copr}.",
-                Copyright = $"{lic}. {dsclmr}." + Environment.NewLine,
+                Heading = $"{title} {build} {copr}.",
+                Copyright = $"{lic} {dsclmr}" + Environment.NewLine,
             };
             errText.AddPreOptionsLine(err);
             errText.AddPreOptionsLine(string.Empty);
