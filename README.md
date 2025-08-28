@@ -1,61 +1,58 @@
+[![Build](https://img.shields.io/github/actions/workflow/status/ha-ves/tsmu/release.yml)](https://github.com/ha-ves/tsmu/actions/workflows/release.yml) [![Release](https://img.shields.io/github/v/release/ha-ves/tsmu?include_prereleases)](https://github.com/ha-ves/tsmu/releases) [![Downloads](https://img.shields.io/github/downloads/ha-ves/tsmu/total)](https://github.com/ha-ves/tsmu/releases) [![Last commit](https://img.shields.io/github/last-commit/ha-ves/tsmu)](https://github.com/ha-ves/tsmu/commits) [![License: AGPL-3.0-or-later](https://img.shields.io/badge/License-AGPL--3.0--or--later-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+
 [English](#tyranoscriptmemoryunlocker-eng)
 # TyranoScriptMemoryUnlocker
-[![Build](https://img.shields.io/github/actions/workflow/status/ha-ves/tsmu/release.yml)](https://github.com/ha-ves/tsmu/actions/workflows/release.yml)
-[![Release](https://img.shields.io/github/v/release/ha-ves/tsmu?include_prereleases)](https://github.com/ha-ves/tsmu/releases)
-[![Downloads](https://img.shields.io/github/downloads/ha-ves/tsmu/total)](https://github.com/ha-ves/tsmu/releases)
-[![Last commit](https://img.shields.io/github/last-commit/ha-ves/tsmu)](https://github.com/ha-ves/tsmu/commits)
-[![License: AGPL-3.0-or-later](https://img.shields.io/badge/License-AGPL--3.0--or--later-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
-**TyranoScriptMemoryUnlocker (TSMU)** ï¿½ÍATyranoScriptï¿½ï¿½ï¿½Qï¿½[ï¿½ï¿½ï¿½ï¿½CGï¿½Eï¿½ï¿½zï¿½ï¿½ï¿½[ï¿½hï¿½ÌƒRï¿½ï¿½ï¿½eï¿½ï¿½ï¿½cï¿½ï¿½ï¿½ï¿½ï¿½×‚Ä‰ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½cï¿½[ï¿½ï¿½ï¿½Å‚ï¿½ï¿½Bï¿½Qï¿½[ï¿½ï¿½ï¿½ï¿½ app.asar ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Ç‚İï¿½ï¿½Ü‚ï¿½Aï¿½ï¿½ï¿½ï¿½Â”\ï¿½ï¿½CGï¿½Eï¿½ï¿½zï¿½É‰ï¿½ï¿½ï¿½ï¿½ÄƒZï¿½[ï¿½uï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½Vï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B
+**TyranoScriptMemoryUnlocker (TSMU)** ‚ÍATyranoScript»ƒQ[ƒ€‚ÌCGE‰ñ‘zƒ‚[ƒh‚ÌƒRƒ“ƒeƒ“ƒc‚ğ‚·‚×‚Ä‰ğ•ú‚·‚éƒc[ƒ‹‚Å‚·BƒQ[ƒ€‚Ì app.asar ƒtƒ@ƒCƒ‹‚ª“Ç‚İ‚Ü‚êA‰ğ•ú‰Â”\‚ÈCGE‰ñ‘z‚É‰‚¶‚ÄƒZ[ƒuƒtƒ@ƒCƒ‹‚ªXV‚³‚ê‚Ü‚·B
 
-### **ï¿½ï¿½ï¿½ï¿½ï¿½F**
-<u>ï¿½ï¿½ï¿½Ìƒcï¿½[ï¿½ï¿½ï¿½ÍA**TyranoScript V400** ï¿½È~ï¿½Ì“ï¿½ï¿½ï¿½ï¿½ [CG & ï¿½ï¿½zï¿½ï¿½ï¿½[ï¿½hï¿½@ï¿½\](https://tyrano.jp/usage/tech/cg) ï¿½ï¿½ï¿½gï¿½pï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Qï¿½[ï¿½ï¿½ï¿½Å‚Ì‚İ“ï¿½ï¿½ì‚µï¿½Ü‚ï¿½ï¿½B</u>
+### **ƒƒ‚F**
+<u>‚±‚Ìƒc[ƒ‹‚ÍA**TyranoScript V400** ˆÈ~‚Ì“Á’è‚Ì [CG & ‰ñ‘zƒ‚[ƒh‹@”\](https://tyrano.jp/usage/tech/cg) ‚ğg—p‚µ‚Ä‚¢‚éƒQ[ƒ€‚Å‚Ì‚İ“®ì‚µ‚Ü‚·B</u>
 
-## ï¿½@ï¿½\
-- TyranoScriptï¿½ï¿½ï¿½Qï¿½[ï¿½ï¿½ï¿½ï¿½CGï¿½Eï¿½ï¿½zï¿½ï¿½ï¿½[ï¿½hï¿½ÌƒRï¿½ï¿½ï¿½eï¿½ï¿½ï¿½cï¿½ï¿½ï¿½ï¿½ï¿½×‚Ä‰ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-- ï¿½ÏXï¿½Oï¿½ÉŒï¿½ï¿½ÌƒZï¿½[ï¿½uï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½oï¿½bï¿½Nï¿½Aï¿½bï¿½v
-- ï¿½eï¿½Xï¿½gï¿½ï¿½ï¿½sï¿½ï¿½ï¿½[ï¿½hï¿½Î‰ï¿½ï¿½iï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ÏXï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½sï¿½ï¿½ï¿½eï¿½Ì‚İ•\ï¿½ï¿½ï¿½j
-- ï¿½Ú×‚Èƒï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½Eï¿½ï¿½ï¿½Oï¿½oï¿½ï¿½
+## ‹@”\
+- TyranoScript»ƒQ[ƒ€‚ÌCGE‰ñ‘zƒ‚[ƒh‚ÌƒRƒ“ƒeƒ“ƒc‚ğ‚·‚×‚Ä‰ğ•ú‚·‚é
+- •ÏX‘O‚ÉŒ³‚ÌƒZ[ƒuƒtƒ@ƒCƒ‹‚ğƒoƒbƒNƒAƒbƒv
+- ƒeƒXƒgÀsƒ‚[ƒh‘Î‰iƒtƒ@ƒCƒ‹‚ğ•ÏX‚¹‚¸AÀs“à—e‚Ì‚İ•\¦j
+- Ú×‚ÈƒƒbƒZ[ƒWEƒƒOo—Í
 
-## ï¿½Kï¿½vï¿½Â‹ï¿½
-- .NET 9 SDKï¿½iï¿½\ï¿½[ï¿½Xï¿½ï¿½ï¿½ï¿½rï¿½ï¿½ï¿½hï¿½ï¿½ï¿½ï¿½ê‡ï¿½j
-- ï¿½Qï¿½[ï¿½ï¿½ï¿½ï¿½ `app.asar` ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½iï¿½Êï¿½ï¿½ `resources/` ï¿½tï¿½Hï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½j
-- ï¿½Qï¿½[ï¿½ï¿½ï¿½ÌƒZï¿½[ï¿½uï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½iï¿½Êï¿½ÍƒQï¿½[ï¿½ï¿½ï¿½Ìƒgï¿½bï¿½v ï¿½tï¿½Hï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½j
+## •K—vŠÂ‹«
+- .NET 9 SDKiƒ\[ƒX‚©‚çƒrƒ‹ƒh‚·‚éê‡j
+- ƒQ[ƒ€‚Ì `app.asar` ƒtƒ@ƒCƒ‹i’Êí‚Í `resources/` ƒtƒHƒ‹ƒ_“àj
+- ƒQ[ƒ€‚ÌƒZ[ƒuƒtƒ@ƒCƒ‹i’Êí‚ÍƒQ[ƒ€‚Ìƒgƒbƒv ƒtƒHƒ‹ƒ_“àj
 
-## ï¿½gï¿½ï¿½ï¿½ï¿½
+## g‚¢•û
 
-### ï¿½ï¿½ï¿½Jï¿½Ï‚İï¿½ï¿½sï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ìgï¿½p
-ï¿½ÅVï¿½Ìï¿½ï¿½sï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ [Releases ï¿½yï¿½[ï¿½W](https://github.com/ha-ves/tsmu/releases) ï¿½ï¿½ï¿½ï¿½_ï¿½Eï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½hï¿½Å‚ï¿½ï¿½Ü‚ï¿½ï¿½B
+### ŒöŠJÏ‚İÀsƒtƒ@ƒCƒ‹‚Ìg—p
+ÅV‚ÌÀsƒtƒ@ƒCƒ‹‚Í [Releases ƒy[ƒW](https://github.com/ha-ves/tsmu/releases) ‚©‚çƒ_ƒEƒ“ƒ[ƒh‚Å‚«‚Ü‚·B
 
-ï¿½_ï¿½Eï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½hï¿½Ü‚ï¿½ï¿½Íƒrï¿½ï¿½ï¿½hï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½È‰ï¿½ï¿½Ì‚æ‚¤ï¿½Éï¿½ï¿½sï¿½ï¿½ï¿½Ü‚ï¿½ï¿½F
+ƒ_ƒEƒ“ƒ[ƒh‚Ü‚½‚Íƒrƒ‹ƒh‚µ‚½ŒãAˆÈ‰º‚Ì‚æ‚¤‚ÉÀs‚µ‚Ü‚·F
 
 ```
-tsmu -a <app.asarï¿½Ìƒpï¿½X> -s <save.savï¿½Ìƒpï¿½X> [--dry] [-v|-vv]
+tsmu -a <app.asar‚ÌƒpƒX> -s <save.sav‚ÌƒpƒX> [--dry] [-v|-vv]
 ```
 
-### dotnet runï¿½iï¿½\ï¿½[ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½j
+### dotnet runiƒ\[ƒX‚©‚çÀsj
 ```
 dotnet run --project TyranoScriptMemoryUnlocker \
-    -a <app.asarï¿½Ìƒpï¿½X> \
-    -s <save.savï¿½Ìƒpï¿½X> [--dry] [-v|-vv]
+    -a <app.asar‚ÌƒpƒX> \
+    -s <save.sav‚ÌƒpƒX> [--dry] [-v|-vv]
 ```
 
-### ï¿½Iï¿½vï¿½Vï¿½ï¿½ï¿½ï¿½
-- `-a, --asar`   ï¿½Qï¿½[ï¿½ï¿½ï¿½Ìu.asarï¿½vï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ö‚Ìƒpï¿½Xï¿½iï¿½Kï¿½{ï¿½j
-- `-s, --sav`    ï¿½Zï¿½[ï¿½uï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ö‚Ìƒpï¿½Xï¿½iï¿½Kï¿½{ï¿½j
-- `--dry`        ï¿½eï¿½Xï¿½gï¿½ï¿½ï¿½sï¿½ï¿½ï¿½[ï¿½hï¿½iï¿½ÏXï¿½È‚ï¿½ï¿½j
-- `-v, -vv`      ï¿½Ú×‚Èƒï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ï¿½\ï¿½ï¿½ï¿½iï¿½Å‘ï¿½2ï¿½iï¿½Kï¿½j
+### ƒIƒvƒVƒ‡ƒ“
+- `-a, --asar`   ƒQ[ƒ€‚Ìu.asarvƒtƒ@ƒCƒ‹‚Ö‚ÌƒpƒXi•K{j
+- `-s, --sav`    ƒZ[ƒuƒtƒ@ƒCƒ‹‚Ö‚ÌƒpƒXi•K{j
+- `--dry`        ƒeƒXƒgÀsƒ‚[ƒhi•ÏX‚È‚µj
+- `-v, -vv`      Ú×‚ÈƒƒbƒZ[ƒW‚ğ•\¦iÅ‘å2’iŠKj
 
-## ï¿½gï¿½pï¿½ï¿½
+## g—p—á
 ```
 tsmu -a resources/app.asar -s save.sav
 ```
 ---
-# ï¿½ï¿½ï¿½Cï¿½Zï¿½ï¿½ï¿½X
-ï¿½ï¿½ï¿½Ìƒvï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ÍuAGPLv3-and-laterï¿½vï¿½ï¿½ï¿½Cï¿½Zï¿½ï¿½ï¿½Xï¿½Ì‚ï¿½ï¿½Æ‚Å’ñ‹Ÿ‚ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½Ü‚ï¿½ï¿½Bï¿½Ú×‚ï¿½ [LICENSE](LICENSE) ï¿½ï¿½ï¿½Qï¿½Æ‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B
+# ƒ‰ƒCƒZƒ“ƒX
+‚±‚ÌƒvƒƒOƒ‰ƒ€‚ÍuAGPLv3-and-latervƒ‰ƒCƒZƒ“ƒX‚Ì‚à‚Æ‚Å’ñ‹Ÿ‚³‚ê‚Ä‚¢‚Ü‚·BÚ×‚Í [LICENSE](LICENSE) ‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B
 
-# ï¿½ÆÓï¿½ï¿½ï¿½
-**ï¿½{ï¿½\ï¿½tï¿½gï¿½Eï¿½Fï¿½Aï¿½Í“Æ—ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½vï¿½ï¿½ï¿½Wï¿½Fï¿½Nï¿½gï¿½Å‚ï¿½ï¿½ï¿½ATyranoScriptï¿½Æ‚Íˆï¿½ØŠÖŒWï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½BTyranoScriptï¿½ÌƒRï¿½[ï¿½hï¿½ï¿½ï¿½ï¿½ï¿½sï¿½Ü‚ï¿½ï¿½ÍŠÜ‚ï¿½Å‚ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½BTyranoScriptï¿½É‚ï¿½ï¿½ï¿½Äï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½Ç‚İï¿½ï¿½Eï¿½Xï¿½Vï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½ï¿½ATyranoScriptï¿½vï¿½ï¿½ï¿½Wï¿½Fï¿½Nï¿½gï¿½Ìˆê•”ï¿½Å‚Í‚ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½B**
+# –ÆÓ–€
+**–{ƒ\ƒtƒgƒEƒFƒA‚Í“Æ—§‚µ‚½ƒvƒƒWƒFƒNƒg‚Å‚ ‚èATyranoScript‚Æ‚ÍˆêØŠÖŒW‚ ‚è‚Ü‚¹‚ñBTyranoScript‚ÌƒR[ƒh‚ğÀs‚Ü‚½‚ÍŠÜ‚ñ‚Å‚¢‚Ü‚¹‚ñBTyranoScript‚É‚æ‚Á‚Ä¶¬‚³‚ê‚½ƒtƒ@ƒCƒ‹‚ğ“Ç‚İæ‚èEXV‚µ‚Ü‚·‚ªATyranoScriptƒvƒƒWƒFƒNƒg‚Ìˆê•”‚Å‚Í‚ ‚è‚Ü‚¹‚ñB**
 
 ---
 
