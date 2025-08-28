@@ -1,3 +1,5 @@
+[![Build](https://img.shields.io/github/actions/workflow/status/ha-ves/tsmu/release.yml)](https://github.com/ha-ves/tsmu/actions/workflows/release.yml) [![Release](https://img.shields.io/github/v/release/ha-ves/tsmu?include_prereleases)](https://github.com/ha-ves/tsmu/releases) [![Downloads](https://img.shields.io/github/downloads/ha-ves/tsmu/total)](https://github.com/ha-ves/tsmu/releases) [![Last commit](https://img.shields.io/github/last-commit/ha-ves/tsmu)](https://github.com/ha-ves/tsmu/commits) [![License: AGPL-3.0-or-later](https://img.shields.io/badge/License-AGPL--3.0--or--later-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+
 [English](#tyranoscriptmemoryunlocker-eng)
 # TyranoScriptMemoryUnlocker
 
